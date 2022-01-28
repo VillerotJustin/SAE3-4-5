@@ -1,6 +1,4 @@
 DROP TABLE IF EXISTS varie_de;
-DROP TABLE IF EXISTS estNoté;
-DROP TABLE IF EXISTS donner;
 DROP TABLE IF EXISTS contient;
 DROP TABLE IF EXISTS estComposéDe;
 DROP TABLE IF EXISTS Commande;
@@ -47,6 +45,7 @@ CREATE TABLE Kits(
 CREATE TABLE Variations(
    idVariation INT AUTO_INCREMENT,
    libelle TEXT,
+   imageProduit VARCHAR(50),
    PRIMARY KEY(idVariation)
 );
 
@@ -72,7 +71,6 @@ CREATE TABLE Produit(
    idProduit INT AUTO_INCREMENT,
    LibelleProduit VARCHAR(90),
    Prix DECIMAL(6,2),
-   ImageProduit VARCHAR(35),
    Stock SMALLINT,
    Description TEXT,
    idFourniseur INT NOT NULL,
@@ -160,6 +158,7 @@ CREATE TABLE contient(
 CREATE TABLE varie_de(
    idProduit INT,
    idVariation INT,
+   Stock INT,
    PRIMARY KEY(idProduit, idVariation),
    CONSTRAINT fk_varie_de_Produit  FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
    CONSTRAINT fk_varie_de_Variations  FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
