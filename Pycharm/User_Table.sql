@@ -1,62 +1,62 @@
 CREATE TABLE Grade(
-   idGrade INT,
+   idGrade INT AUTO INCREMENT,
    Libelle VARCHAR(50),
    abreviation VARCHAR(5),
    PRIMARY KEY(idGrade)
 );
 
 CREATE TABLE Taille(
-   idTaille INT,
+   idTaille INT AUTO INCREMENT,
    LibelleTaille VARCHAR(30),
    PRIMARY KEY(idTaille)
 );
 
 CREATE TABLE TypeProduit(
-   idType INT,
+   idType INT AUTO INCREMENT,
    LibelleType VARCHAR(70),
    PRIMARY KEY(idType)
 );
 
 CREATE TABLE Kits(
-   idKit INT,
+   idKit INT AUTO INCREMENT,
    LibelleKit VARCHAR(70),
    PrixKit DECIMAL(6,2),
    PRIMARY KEY(idKit)
 );
 
 CREATE TABLE Avis(
-   idAvis INT,
+   idAvis INT AUTO INCREMENT,
    Note BYTE,
    commentaire TEXT,
    PRIMARY KEY(idAvis)
 );
 
 CREATE TABLE Variations(
-   idVariation INT,
+   idVariation INT AUTO INCREMENT,
    libelle TEXT,
    PRIMARY KEY(idVariation)
 );
 
 CREATE TABLE Role(
-   idRole INT,
+   idRole INT AUTO INCREMENT,
    libelleRole VARCHAR(50),
    PRIMARY KEY(idRole)
 );
 
 CREATE TABLE Fourniseur(
-   idFourniseur INT,
+   idFourniseur INT AUTO INCREMENT,
    libelleFourniseur VARCHAR(50),
    PRIMARY KEY(idFourniseur)
 );
 
 CREATE TABLE Etat(
-   idEtat INT,
+   idEtat INT AUTO INCREMENT,
    libelleEtat VARCHAR(50),
    PRIMARY KEY(idEtat)
 );
 
 CREATE TABLE Produit(
-   idProduit INT,
+   idProduit INT AUTO INCREMENT,
    LibelleProduit VARCHAR(90),
    Prix DECIMAL(6,2),
    ImageProduit VARCHAR(35),
@@ -74,7 +74,7 @@ CREATE TABLE Produit(
 );
 
 CREATE TABLE Utilisateur(
-   idUser INT,
+   idUser INT AUTO INCREMENT,
    username VARCHAR(255),
    pseudo VARCHAR(255),
    password VARCHAR(255),
@@ -87,7 +87,7 @@ CREATE TABLE Utilisateur(
 );
 
 CREATE TABLE PanierUser(
-   idPanier INT,
+   idPanier INT AUTO INCREMENT,
    idUser INT NOT NULL,
    PRIMARY KEY(idPanier),
    UNIQUE(idUser),
@@ -95,7 +95,7 @@ CREATE TABLE PanierUser(
 );
 
 CREATE TABLE Adresse(
-   idAdresse INT,
+   idAdresse INT AUTO INCREMENT,
    adresse VARCHAR(50),
    code_postale INT,
    ville VARCHAR(50),
@@ -105,7 +105,7 @@ CREATE TABLE Adresse(
 );
 
 CREATE TABLE Commande(
-   idCommande INT,
+   idCommande INT AUTO INCREMENT,
    dateCommande DATE,
    idAdresse INT NOT NULL,
    idEtat INT NOT NULL,
