@@ -87,7 +87,6 @@ CREATE TABLE Produit(
 CREATE TABLE Utilisateur(
    idUser INT AUTO_INCREMENT,
    username VARCHAR(255),
-   pseudo VARCHAR(255),
    password VARCHAR(255),
    email VARCHAR(255),
    role VARCHAR(255),
