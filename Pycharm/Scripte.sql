@@ -107,7 +107,7 @@ CREATE TABLE Utilisateur(
    est_actif SMALLINT,
    idRole INT NOT NULL,
    PRIMARY KEY(idUser),
-   CONSTRAINT fk_ _  FOREIGN KEY(idRole) REFERENCES Role(idRole)
+   CONSTRAINT fk_Utilisateur_Role FOREIGN KEY(idRole) REFERENCES Role(idRole)
 );
 
 CREATE TABLE PanierUser(
