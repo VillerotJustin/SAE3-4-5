@@ -6,13 +6,13 @@ DROP TABLE IF EXISTS estComposéDe;
 DROP TABLE IF EXISTS Commande;
 DROP TABLE IF EXISTS Adresse;
 DROP TABLE IF EXISTS PanierUser;
+DROP TABLE IF EXISTS Avis;
 DROP TABLE IF EXISTS Utilisateur;
 DROP TABLE IF EXISTS Produit;
 DROP TABLE IF EXISTS Etat;
 DROP TABLE IF EXISTS Fourniseur;
 DROP TABLE IF EXISTS Role;
 DROP TABLE IF EXISTS Variations;
-DROP TABLE IF EXISTS Avis;
 DROP TABLE IF EXISTS Kits;
 DROP TABLE IF EXISTS TypeProduit;
 DROP TABLE IF EXISTS Taille;
@@ -42,17 +42,6 @@ CREATE TABLE Kits(
    LibelleKit VARCHAR(70),
    PrixKit DECIMAL(6,2),
    PRIMARY KEY(idKit)
-);
-
-CREATE TABLE Avis(
-   idAvis INT AUTO_INCREMENT,
-   Note BYTE,
-   commentaire TEXT,
-   idProduit INT NOT NULL,
-   idUser INT NOT NULL,
-   PRIMARY KEY(idAvis),
-   CONSTRAINT fk_Avis_Produit FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
-   CONSTRAINT fk_Avis_Utilisateur FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
 );
 
 CREATE TABLE Variations(
@@ -110,6 +99,17 @@ CREATE TABLE Utilisateur(
    CONSTRAINT fk_Utilisateur_Role FOREIGN KEY(idRole) REFERENCES Role(idRole)
 );
 
+CREATE TABLE Avis(
+   idAvis INT AUTO_INCREMENT,
+   Note INT,
+   commentaire TEXT,
+   idProduit INT NOT NULL,
+   idUser INT NOT NULL,
+   PRIMARY KEY(idAvis),
+   CONSTRAINT fk_Avis_Produit FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   CONSTRAINT fk_Avis_Utilisateur FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
+);
+
 CREATE TABLE PanierUser(
    idPanier INT AUTO_INCREMENT,
    idUser INT NOT NULL,
@@ -164,3 +164,5 @@ CREATE TABLE varie_de(
    CONSTRAINT fk_varie_de_Produit  FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
    CONSTRAINT fk_varie_de_Variations  FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
 );
+
+
