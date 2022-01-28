@@ -19,64 +19,68 @@ DROP TABLE IF EXISTS Taille;
 DROP TABLE IF EXISTS Grade;
 
 CREATE TABLE Grade(
-   idGrade INT AUTO INCREMENT,
+   idGrade INT AUTO_INCREMENT,
    Libelle VARCHAR(50),
    abreviation VARCHAR(5),
    PRIMARY KEY(idGrade)
 );
 
 CREATE TABLE Taille(
-   idTaille INT AUTO INCREMENT,
+   idTaille INT AUTO_INCREMENT,
    LibelleTaille VARCHAR(30),
    PRIMARY KEY(idTaille)
 );
 
 CREATE TABLE TypeProduit(
-   idType INT AUTO INCREMENT,
+   idType INT AUTO_INCREMENT,
    LibelleType VARCHAR(70),
    PRIMARY KEY(idType)
 );
 
 CREATE TABLE Kits(
-   idKit INT AUTO INCREMENT,
+   idKit INT AUTO_INCREMENT,
    LibelleKit VARCHAR(70),
    PrixKit DECIMAL(6,2),
    PRIMARY KEY(idKit)
 );
 
 CREATE TABLE Avis(
-   idAvis INT AUTO INCREMENT,
+   idAvis INT AUTO_INCREMENT,
    Note BYTE,
    commentaire TEXT,
-   PRIMARY KEY(idAvis)
+   idProduit INT NOT NULL,
+   idUser INT NOT NULL,
+   PRIMARY KEY(idAvis),
+   CONSTRAINT fk_Avis_Produit FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   CONSTRAINT fk_Avis_Utilisateur FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
 );
 
 CREATE TABLE Variations(
-   idVariation INT AUTO INCREMENT,
+   idVariation INT AUTO_INCREMENT,
    libelle TEXT,
    PRIMARY KEY(idVariation)
 );
 
 CREATE TABLE Role(
-   idRole INT AUTO INCREMENT,
+   idRole INT AUTO_INCREMENT,
    libelleRole VARCHAR(50),
    PRIMARY KEY(idRole)
 );
 
 CREATE TABLE Fourniseur(
-   idFourniseur INT AUTO INCREMENT,
+   idFourniseur INT AUTO_INCREMENT,
    libelleFourniseur VARCHAR(50),
    PRIMARY KEY(idFourniseur)
 );
 
 CREATE TABLE Etat(
-   idEtat INT AUTO INCREMENT,
+   idEtat INT AUTO_INCREMENT,
    libelleEtat VARCHAR(50),
    PRIMARY KEY(idEtat)
 );
 
 CREATE TABLE Produit(
-   idProduit INT AUTO INCREMENT,
+   idProduit INT AUTO_INCREMENT,
    LibelleProduit VARCHAR(90),
    Prix DECIMAL(6,2),
    ImageProduit VARCHAR(35),
@@ -87,14 +91,14 @@ CREATE TABLE Produit(
    idTaille INT,
    idGrade INT,
    PRIMARY KEY(idProduit),
-   FOREIGN KEY(idFourniseur) REFERENCES Fourniseur(idFourniseur),
-   FOREIGN KEY(idType) REFERENCES TypeProduit(idType),
-   FOREIGN KEY(idTaille) REFERENCES Taille(idTaille),
-   FOREIGN KEY(idGrade) REFERENCES Grade(idGrade)
+   CONSTRAINT fk_Produit_Fourniseur FOREIGN KEY(idFourniseur) REFERENCES Fourniseur(idFourniseur),
+   CONSTRAINT fk_Produit_TypeProduit  FOREIGN KEY(idType) REFERENCES TypeProduit(idType),
+   CONSTRAINT fk_Produit_Taille  FOREIGN KEY(idTaille) REFERENCES Taille(idTaille),
+   CONSTRAINT fk_Produit_Grade  FOREIGN KEY(idGrade) REFERENCES Grade(idGrade)
 );
 
 CREATE TABLE Utilisateur(
-   idUser INT AUTO INCREMENT,
+   idUser INT AUTO_INCREMENT,
    username VARCHAR(255),
    pseudo VARCHAR(255),
    password VARCHAR(255),
@@ -103,76 +107,60 @@ CREATE TABLE Utilisateur(
    est_actif SMALLINT,
    idRole INT NOT NULL,
    PRIMARY KEY(idUser),
-   FOREIGN KEY(idRole) REFERENCES Role(idRole)
+   CONSTRAINT fk_ _  FOREIGN KEY(idRole) REFERENCES Role(idRole)
 );
 
 CREATE TABLE PanierUser(
-   idPanier INT AUTO INCREMENT,
+   idPanier INT AUTO_INCREMENT,
    idUser INT NOT NULL,
    PRIMARY KEY(idPanier),
    UNIQUE(idUser),
-   FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
+   CONSTRAINT fk_PanierUser_Utilisateur  FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
 );
 
 CREATE TABLE Adresse(
-   idAdresse INT AUTO INCREMENT,
+   idAdresse INT AUTO_INCREMENT,
    adresse VARCHAR(50),
    code_postale INT,
    ville VARCHAR(50),
    idUser INT NOT NULL,
    PRIMARY KEY(idAdresse),
-   FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
+   CONSTRAINT fk_Adresse_Utilisateur  FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
 );
 
 CREATE TABLE Commande(
-   idCommande INT AUTO INCREMENT,
+   idCommande INT AUTO_INCREMENT,
    dateCommande DATE,
    idAdresse INT NOT NULL,
    idEtat INT NOT NULL,
    idUser INT NOT NULL,
    PRIMARY KEY(idCommande),
-   FOREIGN KEY(idAdresse) REFERENCES Adresse(idAdresse),
-   FOREIGN KEY(idEtat) REFERENCES Etat(idEtat),
-   FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
+   CONSTRAINT fk_Commande_Adresse FOREIGN KEY(idAdresse) REFERENCES Adresse(idAdresse),
+   CONSTRAINT fk_Commande_Etat FOREIGN KEY(idEtat) REFERENCES Etat(idEtat),
+   CONSTRAINT fk_Commande_Utilisateur FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
 );
 
 CREATE TABLE estComposéDe(
    idProduit INT,
    idKit INT,
    PRIMARY KEY(idProduit, idKit),
-   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
-   FOREIGN KEY(idKit) REFERENCES Kits(idKit)
+   CONSTRAINT fk_estComposéDe_Produit  FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   CONSTRAINT fk_estComposéDe_Kits  FOREIGN KEY(idKit) REFERENCES Kits(idKit)
 );
 
 CREATE TABLE contient(
    idProduit INT,
    idPanier INT,
-   quantite BYTE,
+   quantite INT,
    PRIMARY KEY(idProduit, idPanier),
-   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
-   FOREIGN KEY(idPanier) REFERENCES PanierUser(idPanier)
-);
-
-CREATE TABLE donner(
-   idUser INT,
-   idAvis INT,
-   PRIMARY KEY(idUser, idAvis),
-   FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser),
-   FOREIGN KEY(idAvis) REFERENCES Avis(idAvis)
-);
-
-CREATE TABLE estNoté(
-   idProduit INT,
-   idAvis INT,
-   PRIMARY KEY(idProduit, idAvis),
-   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
-   FOREIGN KEY(idAvis) REFERENCES Avis(idAvis)
+   CONSTRAINT fk_contient_Produit FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   CONSTRAINT fk_contient_PanierUser FOREIGN KEY(idPanier) REFERENCES PanierUser(idPanier)
 );
 
 CREATE TABLE varie_de(
    idProduit INT,
    idVariation INT,
    PRIMARY KEY(idProduit, idVariation),
-   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
-   FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
+   CONSTRAINT fk_varie_de_Produit  FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   CONSTRAINT fk_varie_de_Variations  FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
 );
