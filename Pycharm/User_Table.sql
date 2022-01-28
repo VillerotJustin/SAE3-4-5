@@ -1,20 +1,158 @@
-DROP TABLE IF EXISTS user;
-
-CREATE TABLE user (
-    id int AUTO_INCREMENT,
-    pseudo varchar(255),
-    email varchar(255),
-    password varchar(255),
-    role varchar(255),
-    estActif tinyint(1),
-    primary key (id)
+CREATE TABLE Grade(
+   idGrade INT,
+   Libelle VARCHAR(50),
+   abreviation VARCHAR(5),
+   PRIMARY KEY(idGrade)
 );
 
-Describe user;
+CREATE TABLE Taille(
+   idTaille INT,
+   LibelleTaille VARCHAR(30),
+   PRIMARY KEY(idTaille)
+);
 
-INSERT INTO user (id, pseudo, email, password, role, estActif) VALUES
-(null, 'admin@admin.fr', 'admin', 'sha256$pBGlZy6UukyHBFDH$2f089c1d26f2741b68c9218a68bfe2e25dbb069c27868a027dad03bcb3d7f69a', 'ROLE_admin', 1),
-(null, 'client@client.fr', 'client', 'sha256$Q1HFT4TKRqnMhlTj$cf3c84ea646430c98d4877769c7c5d2cce1edd10c7eccd2c1f9d6114b74b81c4', 'ROLE_client',   1),
-(null, 'client2@client2.fr', 'client2', 'sha256$ayiON3nJITfetaS8$0e039802d6fac2222e264f5a1e2b94b347501d040d71cfa4264cad6067cf5cf3', 'ROLE_client',   1);
+CREATE TABLE TypeProduit(
+   idType INT,
+   LibelleType VARCHAR(70),
+   PRIMARY KEY(idType)
+);
 
-SELECT * FROM user;
+CREATE TABLE Kits(
+   idKit INT,
+   LibelleKit VARCHAR(70),
+   PrixKit DECIMAL(6,2),
+   PRIMARY KEY(idKit)
+);
+
+CREATE TABLE Avis(
+   idAvis INT,
+   Note BYTE,
+   commentaire TEXT,
+   PRIMARY KEY(idAvis)
+);
+
+CREATE TABLE Variations(
+   idVariation INT,
+   libelle TEXT,
+   PRIMARY KEY(idVariation)
+);
+
+CREATE TABLE Role(
+   idRole INT,
+   libelleRole VARCHAR(50),
+   PRIMARY KEY(idRole)
+);
+
+CREATE TABLE Fourniseur(
+   idFourniseur INT,
+   libelleFourniseur VARCHAR(50),
+   PRIMARY KEY(idFourniseur)
+);
+
+CREATE TABLE Etat(
+   idEtat INT,
+   libelleEtat VARCHAR(50),
+   PRIMARY KEY(idEtat)
+);
+
+CREATE TABLE Produit(
+   idProduit INT,
+   LibelleProduit VARCHAR(90),
+   Prix DECIMAL(6,2),
+   ImageProduit VARCHAR(35),
+   Stock SMALLINT,
+   Description TEXT,
+   idFourniseur INT NOT NULL,
+   idType INT NOT NULL,
+   idTaille INT,
+   idGrade INT,
+   PRIMARY KEY(idProduit),
+   FOREIGN KEY(idFourniseur) REFERENCES Fourniseur(idFourniseur),
+   FOREIGN KEY(idType) REFERENCES TypeProduit(idType),
+   FOREIGN KEY(idTaille) REFERENCES Taille(idTaille),
+   FOREIGN KEY(idGrade) REFERENCES Grade(idGrade)
+);
+
+CREATE TABLE Utilisateur(
+   idUser INT,
+   username VARCHAR(255),
+   pseudo VARCHAR(255),
+   password VARCHAR(255),
+   email VARCHAR(255),
+   role VARCHAR(255),
+   est_actif SMALLINT,
+   idRole INT NOT NULL,
+   PRIMARY KEY(idUser),
+   FOREIGN KEY(idRole) REFERENCES Role(idRole)
+);
+
+CREATE TABLE PanierUser(
+   idPanier INT,
+   idUser INT NOT NULL,
+   PRIMARY KEY(idPanier),
+   UNIQUE(idUser),
+   FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
+);
+
+CREATE TABLE Adresse(
+   idAdresse INT,
+   adresse VARCHAR(50),
+   code_postale INT,
+   ville VARCHAR(50),
+   idUser INT NOT NULL,
+   PRIMARY KEY(idAdresse),
+   FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
+);
+
+CREATE TABLE Commande(
+   idCommande INT,
+   dateCommande DATE,
+   idAdresse INT NOT NULL,
+   idEtat INT NOT NULL,
+   idUser INT NOT NULL,
+   PRIMARY KEY(idCommande),
+   FOREIGN KEY(idAdresse) REFERENCES Adresse(idAdresse),
+   FOREIGN KEY(idEtat) REFERENCES Etat(idEtat),
+   FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser)
+);
+
+CREATE TABLE estComposéDe(
+   idProduit INT,
+   idKit INT,
+   PRIMARY KEY(idProduit, idKit),
+   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   FOREIGN KEY(idKit) REFERENCES Kits(idKit)
+);
+
+CREATE TABLE contient(
+   idProduit INT,
+   idPanier INT,
+   quantite BYTE,
+   PRIMARY KEY(idProduit, idPanier),
+   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   FOREIGN KEY(idPanier) REFERENCES PanierUser(idPanier)
+);
+
+CREATE TABLE donner(
+   idUser INT,
+   idAvis INT,
+   PRIMARY KEY(idUser, idAvis),
+   FOREIGN KEY(idUser) REFERENCES Utilisateur(idUser),
+   FOREIGN KEY(idAvis) REFERENCES Avis(idAvis)
+);
+
+CREATE TABLE estNoté(
+   idProduit INT,
+   idAvis INT,
+   PRIMARY KEY(idProduit, idAvis),
+   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   FOREIGN KEY(idAvis) REFERENCES Avis(idAvis)
+);
+
+CREATE TABLE varie_de(
+   idProduit INT,
+   idVariation INT,
+   PRIMARY KEY(idProduit, idVariation),
+   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
+);

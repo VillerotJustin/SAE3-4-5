@@ -26,3 +26,19 @@ Recherche information pour la création d'une liste des produits a présente sur
 # WILCZAK Lilian
 
 Creation de la structure du Cahier des charges ainsi que du coeur du contenue
+
+## Vendredi 28 janvier 2022  
+
+# VALENNE Nathan
+
+Modification des pages HTML
+
+# VILLEROT Justin
+
+Conception du MCD et du scripte pour les bases de donné
+
+# WILCZAK Lilian
+
+Modification des liens et des requetes dans le site web
+
+
