@@ -71,7 +71,6 @@ CREATE TABLE Produit(
    idProduit INT AUTO_INCREMENT,
    LibelleProduit VARCHAR(90),
    Prix DECIMAL(6,2),
-   Stock SMALLINT,
    Description TEXT,
    idFourniseur INT NOT NULL,
    idType INT NOT NULL,
