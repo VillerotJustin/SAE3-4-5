@@ -27,7 +27,7 @@
                             <td>{{itemPanier.prix}}</td>
                             <td>{{ "{:,.2f} €".format((itemPanier.prix * itemPanier.quantite)) }}</td>
                             <td>
-                               {% if itemPanier.stock > 0 %}
+                               {% if itemPanier.Stock is defined and itemPanier.Stock > 0 %}
                                 <form action="/client/panier/add" style="display: inline-block;"  method="post">
                                         <input type="hidden" name="quantite" value="1">
                                         <input type="hidden" name="idArticle" value="{{ itemPanier.article_id }}">
@@ -79,7 +79,7 @@
                             <div class="card-body border-dark rounded">
                                 <a href="/client/article/details/{{ article.idProduit }}">
                                 <h2 class="card-title">
-                                    <span style="color: #0b2e13">{{ article.libelleProduit }}</span><br>
+                                    <span style="color: #0b2e13">{{ article.LibelleProduit }}</span><br>
                                     {{ article.Prix }}
                                     €
                                 </h2>
@@ -100,13 +100,13 @@
                                              </button>
 
                                             <div class="input-group input-group-sm" style="width: 4rem !important;">
-                                                <input type="number" id="input-{{ article.idProduit }}" step="1" min="0" max="{{ article.stock }}" class="form-control" style="width: 4rem !important;" value="1" name="quantite">
+                                                <input type="number" id="input-{{ article.idProduit }}" step="1" min="0" max="{{ article.Stock }}" class="form-control" style="width: 4rem !important;" value="1" name="quantite">
                                             </div>
                                         </form>
                                 </div>
                             </div>
                             <div class="card-footer">
-                            {% if article.stock is defined %}
+                            {% if article.Stock is defined %}
                                  {% if article.Stock > 0 %}
                                     <small class="text-muted">Stock restant : {{ article.Stock }}</small>
                                  {% else %}
