@@ -88,7 +88,6 @@ CREATE TABLE Utilisateur(
    username VARCHAR(255),
    password VARCHAR(255),
    email VARCHAR(255),
-   role VARCHAR(255),
    est_actif SMALLINT,
    idRole INT NOT NULL,
    PRIMARY KEY(idUser),
@@ -163,3 +162,6 @@ CREATE TABLE varie_de(
 );
 
 
+INSERT INTO Role VALUES
+(NULL, "Admin"),
+(NULL, "User");
