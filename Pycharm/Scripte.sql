@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS concerne;
 DROP TABLE IF EXISTS varie_de;
 DROP TABLE IF EXISTS contient;
 DROP TABLE IF EXISTS estComposéDe;
@@ -159,6 +160,15 @@ CREATE TABLE varie_de(
    PRIMARY KEY(idProduit, idVariation),
    CONSTRAINT fk_varie_de_Produit  FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
    CONSTRAINT fk_varie_de_Variations  FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
+);
+
+CREATE TABLE concerne(
+   idProduit INT,
+   idCommande INT,
+   quantite INT,
+   PRIMARY KEY(idProduit, idCommande),
+   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   FOREIGN KEY(idCommande) REFERENCES Commande(idCommande)
 );
 
 
