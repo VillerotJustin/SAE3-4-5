@@ -21,9 +21,9 @@ def auth_login_post():
     mycursor = get_db().cursor()
     username = request.form.get('username')
     password = request.form.get('password')
-    tuple_select = (username)
-    sql = '''SELECT * FROM Utilisateur WHERE username = %s'''
-    retour = mycursor.execute(sql, (username))
+    tuple_select = username
+    sql = '''SELECT * FROM Utilisateur WHERE username = %s;'''
+    retour = mycursor.execute(sql, username)
     user = mycursor.fetchone()
     if user:
         mdp_ok = check_password_hash(user['password'], password)
@@ -33,7 +33,7 @@ def auth_login_post():
         else:
             session['username'] = user['username']
             session['role'] = user['role']
-            session['user_id'] = user['id']
+            session['user_id'] = user['idUser']
             print(user['username'], user['role'])
             if user['role'] == 'ROLE_admin':
                 return redirect('/admin/commande/index')
@@ -56,7 +56,7 @@ def auth_signup_post():
     password = request.form.get('password')
     tuple_select = (username, email)
     sql = '''SELECT * from Utilisateur WHERE username = %s AND email = %s;'''
-    retour = mycursor.execute(sql, tuple_select)
+    mycursor.execute(sql, tuple_select)
     user = mycursor.fetchone()
     if user:
         flash(u'votre adresse <strong>Email</strong> ou  votre <strong>Username</strong> (login) existe déjà')
@@ -64,10 +64,10 @@ def auth_signup_post():
 
     # ajouter un nouveau user
     password = generate_password_hash(password, method='sha256')
-    tuple_insert = (username, email, password, 'ROLE_client')
-    sql = '''INSERT INTO Utilisateur VALUES (NULL, %s, %s, %s, %s, false, 1);'''
+    tuple_insert = (username, password, email)
+    sql = '''INSERT INTO Utilisateur VALUES (NULL, %s, %s, %s, false, 2);'''
     mycursor.execute(sql, tuple_insert)
-    get_db().commit()                    # position de cette ligne discutatble !
+    get_db().commit()                    # position de cette ligne discutable !
     sql='''SELECT last_insert_id() AS last_insert_id;'''
     mycursor.execute(sql)
     info_last_id = mycursor.fetchone()
@@ -95,4 +95,3 @@ def auth_logout():
 @auth_security.route('/forget-password', methods=['GET'])
 def forget_password():
     return render_template('auth/forget_password.html')
-

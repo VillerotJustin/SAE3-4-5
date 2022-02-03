@@ -74,7 +74,7 @@
         </div>
 
         <div class="row">
-                {% for article in article  %}
+                {% for article in article %}
                         <div class="card col-4 mt-4">
                             <div class="card-body border-dark rounded">
                                 <a href="/client/article/details/{{ article.idProduit }}">
@@ -85,7 +85,7 @@
                                 </h2>
                                 <div class="card-body">
                                      {%  if article.imageProduit is not none %}
-                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/ {{article.ImageProduit}}') }}"  alt="image  de {{ article.LibelleProduit }}" >
+                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/ {{article.imageProduit}}') }}"  alt="image  de {{ article.LibelleProduit }}" >
                                     {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.LibelleProduit }}" >
                                     {% endif %}
                                     <hr>
