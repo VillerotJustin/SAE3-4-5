@@ -22,8 +22,8 @@ def auth_login_post():
     username = request.form.get('username')
     password = request.form.get('password')
     tuple_select = username
-    sql = '''SELECT * FROM Utilisateur WHERE username = %s;'''
-    retour = mycursor.execute(sql, username)
+    sql = "SELECT idUser, username, password, email, est_actif,libelleRole, Utilisateur.idRole FROM Utilisateur INNER JOIN BDD_lwilcza2.Role R on Utilisateur.idRole = R.idRole WHERE username = %s;"
+    mycursor.execute(sql, tuple_select)
     user = mycursor.fetchone()
     if user:
         mdp_ok = check_password_hash(user['password'], password)
@@ -32,10 +32,10 @@ def auth_login_post():
             return redirect('/login')
         else:
             session['username'] = user['username']
-            session['role'] = user['role']
+            session['role'] = user['libelleRole']
             session['user_id'] = user['idUser']
-            print(user['username'], user['role'])
-            if user['role'] == 'ROLE_admin':
+            print(user['username'], user['idRole'])
+            if user['idRole'] == 1:
                 return redirect('/admin/commande/index')
             else:
                 return redirect('/client/article/show')
