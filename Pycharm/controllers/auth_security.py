@@ -64,8 +64,8 @@ def auth_signup_post():
 
     # ajouter un nouveau user
     password = generate_password_hash(password, method='sha256')
-    tuple_insert = (username, password, email, 'ROLE_client')
-    sql = '''INSERT INTO Utilisateur VALUES (NULL, %s, %s, %s, %s, false, 2);'''
+    tuple_insert = (username, password, email)
+    sql = '''INSERT INTO Utilisateur VALUES (NULL, %s, %s, %s, false, 2);'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()                    # position de cette ligne discutable !
     sql='''SELECT last_insert_id() AS last_insert_id;'''
