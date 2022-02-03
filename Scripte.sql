@@ -173,8 +173,8 @@ CREATE TABLE concerne(
 
 
 INSERT INTO Role VALUES
-(NULL, "Admin"),
-(NULL, "User");
+(NULL, "ROLE_admin"),
+(NULL, "ROLE_client");
 
 LOAD DATA LOCAL INFILE './DATASETS/Grades.csv' INTO TABLE Grade FIELDS TERMINATED BY ',';
 
