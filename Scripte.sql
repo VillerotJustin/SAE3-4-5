@@ -175,3 +175,5 @@ CREATE TABLE concerne(
 INSERT INTO Role VALUES
 (NULL, "Admin"),
 (NULL, "User");
+
+LOAD DATA LOCAL INFILE '/home/bloodchild/Documents/GitHub/VillerotJustin/SAE3-4-5/DATASETS/Grades.csv' INTO TABLE Grade FIELDS TERMINATED BY ',';
