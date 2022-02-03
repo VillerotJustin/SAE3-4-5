@@ -234,3 +234,4 @@ INSERT INTO Produit VALUES
 (NULL, "H & S AIRBRUSH EVOLUTION TWO IN ONE", 159.90, "De Harder & Steenbeck une nouvelle ligne d’Aérographe signée Vallejo, le leader mondial des peintures pour la modélisation et le wargame L'évolution 2 en 1 est une réussite parmi les pulvérisateurs de peinture: une structure solide, un excellent traitement et une double action douce ont fait de cet instrument l'un des aérographes les plus utilisés depuis son lancement. L'Evolution est un système d'alimentation par gravité disponible sous la forme d'un modèle 2 en 1, doté de deux jeux de buses de différentes tailles et permettant une conversion rapide et flexible de l'instrument pour tous les domaines d'application. Le 2 en 1 comprend un jeu de buses de 0,2 et 0,4 mm et deux tasses de 2 et 5 ml. Disponibilité sous 4 semaines.", 2, 3, NULL, NULL);
 
 LOAD DATA LOCAL INFILE './DATASETS/varie_de.csv' INTO TABLE varie_de FIELDS TERMINATED BY ',';
+
