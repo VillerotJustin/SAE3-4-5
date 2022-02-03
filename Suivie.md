@@ -41,4 +41,17 @@ Conception du MCD et du scripte pour les bases de donné
 
 Modification des liens et des requetes dans le site web
 
+## Jeudi 03 février 2022 
+
+# VALENNE Nathan
+
+Adaptation du code fournie a notre MCD
+
+# VILLEROT Justin
+
+Finalisation des scriptes pour l'initialisation des bases de données
+
+# WILCZAK Lilian
+
+Adaptation du code fournie a notre MCD
 
