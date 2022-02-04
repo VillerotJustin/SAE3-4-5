@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS concerne;
-DROP TABLE IF EXISTS varie_de;
 DROP TABLE IF EXISTS contient;
 DROP TABLE IF EXISTS estComposéDe;
 DROP TABLE IF EXISTS Commande;
@@ -7,11 +6,11 @@ DROP TABLE IF EXISTS Adresse;
 DROP TABLE IF EXISTS PanierUser;
 DROP TABLE IF EXISTS Avis;
 DROP TABLE IF EXISTS Utilisateur;
-DROP TABLE IF EXISTS Produit;
 DROP TABLE IF EXISTS Etat;
 DROP TABLE IF EXISTS Fourniseur;
 DROP TABLE IF EXISTS Role;
 DROP TABLE IF EXISTS Variations;
+DROP TABLE IF EXISTS Produit;
 DROP TABLE IF EXISTS Kits;
 DROP TABLE IF EXISTS TypeProduit;
 DROP TABLE IF EXISTS Taille;
@@ -41,13 +40,6 @@ CREATE TABLE Kits(
    LibelleKit VARCHAR(70),
    PrixKit DECIMAL(6,2),
    PRIMARY KEY(idKit)
-);
-
-CREATE TABLE Variations(
-   idVariation INT AUTO_INCREMENT,
-   libelle TEXT,
-   imageProduit VARCHAR(50),
-   PRIMARY KEY(idVariation)
 );
 
 CREATE TABLE Role(
@@ -82,6 +74,16 @@ CREATE TABLE Produit(
    CONSTRAINT fk_Produit_TypeProduit  FOREIGN KEY(idType) REFERENCES TypeProduit(idType),
    CONSTRAINT fk_Produit_Taille  FOREIGN KEY(idTaille) REFERENCES Taille(idTaille),
    CONSTRAINT fk_Produit_Grade  FOREIGN KEY(idGrade) REFERENCES Grade(idGrade)
+);
+
+CREATE TABLE Variations(
+   idVariation INT AUTO_INCREMENT,
+   libelle VARCHAR,
+   imageProduit VARCHAR(50),
+   Stock INT,
+   idProduit INT,
+   PRIMARY KEY(idVariation),
+   CONSTRAINT fk_Variations_Produit FOREIGN KEY(idProduit) REFERENCES Produit(idProduit)
 );
 
 CREATE TABLE Utilisateur(
@@ -151,15 +153,6 @@ CREATE TABLE contient(
    PRIMARY KEY(idProduit, idPanier),
    CONSTRAINT fk_contient_Produit FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
    CONSTRAINT fk_contient_PanierUser FOREIGN KEY(idPanier) REFERENCES PanierUser(idPanier)
-);
-
-CREATE TABLE varie_de(
-   idProduit INT,
-   idVariation INT,
-   Stock INT,
-   PRIMARY KEY(idProduit, idVariation),
-   CONSTRAINT fk_varie_de_Produit  FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
-   CONSTRAINT fk_varie_de_Variations  FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
 );
 
 CREATE TABLE concerne(
@@ -233,5 +226,4 @@ INSERT INTO Produit VALUES
 (NULL, "FENGDA COMPRESSOR AS-18-3", 169.00, "FENGDA COMPRESSOR AS-18-3Oil-free piston compressor Ultra quiet Motor: 220-240V 50Hz /110-120V 60HZ Rotational speed: 1450 rpm/ 1700 rpm Auto-Stop at 4Bar; Auto Re-Start at 3bar Maximum pressure: 57 psi (4 BAR) 1/8 BSP Male outlet Air Delivery: 23 litres/min PCS/CTN: 6 Disponibilité sous 4 semaines.", 2, 3, NULL, NULL),
 (NULL, "H & S AIRBRUSH EVOLUTION TWO IN ONE", 159.90, "De Harder & Steenbeck une nouvelle ligne d’Aérographe signée Vallejo, le leader mondial des peintures pour la modélisation et le wargame L'évolution 2 en 1 est une réussite parmi les pulvérisateurs de peinture: une structure solide, un excellent traitement et une double action douce ont fait de cet instrument l'un des aérographes les plus utilisés depuis son lancement. L'Evolution est un système d'alimentation par gravité disponible sous la forme d'un modèle 2 en 1, doté de deux jeux de buses de différentes tailles et permettant une conversion rapide et flexible de l'instrument pour tous les domaines d'application. Le 2 en 1 comprend un jeu de buses de 0,2 et 0,4 mm et deux tasses de 2 et 5 ml. Disponibilité sous 4 semaines.", 2, 3, NULL, NULL);
 
-LOAD DATA LOCAL INFILE './DATASETS/varie_de.csv' INTO TABLE varie_de FIELDS TERMINATED BY ',';
 
