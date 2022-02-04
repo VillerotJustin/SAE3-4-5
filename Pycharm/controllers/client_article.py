@@ -30,7 +30,18 @@ def client_article_show():                                 # remplace client_ind
 @client_article.route('/client/article/details/<int:id>', methods=['GET'])
 def client_article_details(id):
     mycursor = get_db().cursor()
-    article=None
-    commentaires=None
-    commandes_articles=None
+    sql ='''SELECT Produit.idProduit, LibelleProduit, Prix, Description, Stock, imageProduit 
+    FROM Produit 
+    INNER JOIN BDD_lwilcza2.varie_de vd on Produit.idProduit = vd.idProduit INNER JOIN BDD_lwilcza2.Variations V on vd.idVariation = V.idVariation
+    WHERE Produit.idProduit = %s;
+    '''
+    mycursor.execute(sql,id)
+    article = mycursor.fetchall()
+    sql ="SELECT * FROM Avis;"
+    mycursor.execute(sql)
+    commentaires = mycursor.fetchall()
+
+    sql ="SELECT * FROM Commande;"
+    mycursor.execute(sql)
+    commandes_articles = mycursor.fetchall()
     return render_template('client/boutique/article_details.html', article=article, commentaires=commentaires, commandes_articles=commandes_articles)
