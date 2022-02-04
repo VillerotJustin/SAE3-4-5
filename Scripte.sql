@@ -6,19 +6,11 @@ DROP TABLE IF EXISTS Adresse;
 DROP TABLE IF EXISTS PanierUser;
 DROP TABLE IF EXISTS Avis;
 DROP TABLE IF EXISTS Utilisateur;
-<<<<<<< HEAD
-DROP TABLE IF EXISTS Etat;
-DROP TABLE IF EXISTS Fourniseur;
-DROP TABLE IF EXISTS Role;
-DROP TABLE IF EXISTS Variations;
-DROP TABLE IF EXISTS Produit;
-=======
 DROP TABLE IF EXISTS Variations;
 DROP TABLE IF EXISTS Produit;
 DROP TABLE IF EXISTS Etat;
 DROP TABLE IF EXISTS Fourniseur;
 DROP TABLE IF EXISTS Role;
->>>>>>> 5fa55aaa71ba2c8903000f27548a9e530424e627
 DROP TABLE IF EXISTS Kits;
 DROP TABLE IF EXISTS TypeProduit;
 DROP TABLE IF EXISTS Taille;
@@ -50,11 +42,7 @@ CREATE TABLE Kits(
    PRIMARY KEY(idKit)
 );
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 5fa55aaa71ba2c8903000f27548a9e530424e627
 CREATE TABLE Role(
    idRole INT AUTO_INCREMENT,
    libelleRole VARCHAR(50),
@@ -91,21 +79,12 @@ CREATE TABLE Produit(
 
 CREATE TABLE Variations(
    idVariation INT AUTO_INCREMENT,
-<<<<<<< HEAD
-   libelle VARCHAR,
-   imageProduit VARCHAR(50),
-   Stock INT,
-   idProduit INT,
-   PRIMARY KEY(idVariation),
-   CONSTRAINT fk_Variations_Produit FOREIGN KEY(idProduit) REFERENCES Produit(idProduit)
-=======
    libelle TEXT,
+   imageProduit VARCHAR(50),
    Stock INT,
    idProduit INT,
-   imageProduit VARCHAR(50),
    CONSTRAINT fk_Variations_Produit  FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
    PRIMARY KEY(idVariation)
->>>>>>> 5fa55aaa71ba2c8903000f27548a9e530424e627
 );
 
 CREATE TABLE Utilisateur(
@@ -198,8 +177,6 @@ LOAD DATA LOCAL INFILE './DATASETS/Taille.csv' INTO TABLE Taille FIELDS TERMINAT
 
 LOAD DATA LOCAL INFILE './DATASETS/TypeProduits.csv' INTO TABLE TypeProduit FIELDS TERMINATED BY ',';
 
-LOAD DATA LOCAL INFILE './DATASETS/Variations.csv' INTO TABLE Variations FIELDS TERMINATED BY ',';
-
 LOAD DATA LOCAL INFILE './DATASETS/Fourniseur.csv' INTO TABLE Fourniseur FIELDS TERMINATED BY ',';
 
 INSERT INTO Etat VALUES
@@ -249,8 +226,5 @@ INSERT INTO Produit VALUES
 (NULL, "FENGDA COMPRESSOR AS-18-3", 169.00, "FENGDA COMPRESSOR AS-18-3Oil-free piston compressor Ultra quiet Motor: 220-240V 50Hz /110-120V 60HZ Rotational speed: 1450 rpm/ 1700 rpm Auto-Stop at 4Bar; Auto Re-Start at 3bar Maximum pressure: 57 psi (4 BAR) 1/8 BSP Male outlet Air Delivery: 23 litres/min PCS/CTN: 6 Disponibilité sous 4 semaines.", 2, 3, NULL, NULL),
 (NULL, "H & S AIRBRUSH EVOLUTION TWO IN ONE", 159.90, "De Harder & Steenbeck une nouvelle ligne d’Aérographe signée Vallejo, le leader mondial des peintures pour la modélisation et le wargame L'évolution 2 en 1 est une réussite parmi les pulvérisateurs de peinture: une structure solide, un excellent traitement et une double action douce ont fait de cet instrument l'un des aérographes les plus utilisés depuis son lancement. L'Evolution est un système d'alimentation par gravité disponible sous la forme d'un modèle 2 en 1, doté de deux jeux de buses de différentes tailles et permettant une conversion rapide et flexible de l'instrument pour tous les domaines d'application. Le 2 en 1 comprend un jeu de buses de 0,2 et 0,4 mm et deux tasses de 2 et 5 ml. Disponibilité sous 4 semaines.", 2, 3, NULL, NULL);
 
-<<<<<<< HEAD
 
-=======
-LOAD DATA LOCAL INFILE './DATASETS/varie_de.csv' INTO TABLE varie_de FIELDS TERMINATED BY ',';
->>>>>>> 5fa55aaa71ba2c8903000f27548a9e530424e627
+LOAD DATA LOCAL INFILE './DATASETS/Variations.csv' INTO TABLE Variations FIELDS TERMINATED BY ',';
