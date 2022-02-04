@@ -1,15 +1,16 @@
 {% extends "client/layout_client.html" %}
 {% block body %}
 <div class="container">
+{% for article in article %}
     <div class="row">
          <h2 class="card-title">
-             <span style="color: #0b2e13">{{ article.nom }}</span> &nbsp;{{ article.prix }} €
+             <span style="color: #0b2e13">{{ article.LibelleProduit }}</span> &nbsp;{{ article.Prix }} €
          </h2>
 
         <div class="card-body">
-        {%  if article.image is not none %}
-            <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/' + article['image']) }}"  alt="image  de {{ article.nom }}" >
-        {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.nom }}" >
+        {%  if article.imageProduit is not none %}
+            <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/'+ article.imageProduit  ) }}"  alt="image  de {{ article.LibelleProduit }}" >
+        {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.LibelleProduit }}" >
         {% endif %}
 
         </div>
@@ -30,7 +31,7 @@
                     <input type="number" name="note" id="inputNote" step="0.1" min="0" max="5" class="form-control" style="width: 8rem !important;" value="" >
                 </div>
                 <input type="hidden" name="idUser" value="{{ session['user_id'] }}">
-                <input type="hidden" name="idArticle" value="{{ article.id }}">
+                <input type="hidden" name="idArticle" value="{{ article.idAvis }}">
                 <form  action="/client/comment/add" style="display: inline-block;"  method="post" >
                         <button class="btn btn-primary" > Ajouter un avis </button>
                 </form>
@@ -42,6 +43,8 @@
         {% endif %}
 
     </div>
+
+    {% endfor %}
 
     <div class="row">
             <div class="col-5 bg-light p-3">
@@ -60,17 +63,17 @@
             {% if commentaires %}
                 {% for commentaire in commentaires %}
                     <tr>
-                        <td>{{ commentaire.user_id }}</td>
+                        <td>{{ commentaire.idUser }}</td>
                         <td>{{ commentaire.commentaire }}</td>
-                        <td>{{ commentaire.note }}
+                        <td>{{ commentaire.Note }}
                         {{ commentaire.__dict__ }}
                         </td>
                         <td>
-                            {% if commentaire.user_id == session['user_id'] %}
+                            {% if commentaire.idUser == session['user_id'] %}
                                   <form  action="/client/comment/delete"  style="display: inline-block;"  method="post" >
-                                      <input type="hidden" name="idArticle" value="{{ commentaire.article_id }}">
-                                      <input type="hidden" name="idUser" value="{{ commentaire.user_id }}">
-                                      <input type="hidden" name="idAvis" value="{{ commentaire.id }}">
+                                      <input type="hidden" name="idArticle" value="{{ commentaire.idProduit }}">
+                                      <input type="hidden" name="idUser" value="{{ commentaire.idUser }}">
+                                      <input type="hidden" name="idAvis" value="{{ commentaire.idAvis }}">
                                       <button class="btn btn-primary" > supprimer </button>
                                   </form>
                             {% endif %}
