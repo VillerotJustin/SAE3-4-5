@@ -22,7 +22,7 @@ def auth_login_post():
     username = request.form.get('username')
     password = request.form.get('password')
     tuple_select = username
-    sql = "SELECT idUser, username, password, email, est_actif,libelleRole, Utilisateur.idRole FROM Utilisateur INNER JOIN BDD_lwilcza2.Role R on Utilisateur.idRole = R.idRole WHERE username = %s;"
+    sql = "SELECT idUser, username, password, email, est_actif,libelleRole, Utilisateur.idRole FROM Utilisateur INNER JOIN Role R on Utilisateur.idRole = R.idRole WHERE username = %s;"
     mycursor.execute(sql, tuple_select)
     user = mycursor.fetchone()
     if user:
