@@ -80,7 +80,7 @@ CREATE TABLE Produit(
 CREATE TABLE Variations(
    idVariation INT AUTO_INCREMENT,
    libelle TEXT,
-   imageProduit VARCHAR(50),
+   imageProduit VARCHAR(255),
    Stock INT,
    idProduit INT,
    CONSTRAINT fk_Variations_Produit  FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
