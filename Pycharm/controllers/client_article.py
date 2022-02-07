@@ -12,8 +12,14 @@ client_article = Blueprint('client_article', __name__,
 @client_article.route('/client/article/show')      # remplace /client
 def client_article_show():                                 # remplace client_index
     mycursor = get_db().cursor()
+
+
+
+
     articles = []
-    sql="SELECT Produit.idProduit, LibelleProduit, Prix, Description, Stock, imageProduit FROM Produit INNER JOIN BDD_lwilcza2.varie_de vd on Produit.idProduit = vd.idProduit INNER JOIN BDD_lwilcza2.Variations V on vd.idVariation = V.idVariation;"
+    sql='''SELECT Produit.idProduit, LibelleProduit, Prix, Description, Stock, imageProduit
+        FROM Produit
+    INNER JOIN Variations V2 on Produit.idProduit = V2.idProduit;'''
     mycursor.execute(sql)
     article = mycursor.fetchall()
     types_articles = []
@@ -30,15 +36,16 @@ def client_article_show():                                 # remplace client_ind
 @client_article.route('/client/article/details/<int:id>', methods=['GET'])
 def client_article_details(id):
     mycursor = get_db().cursor()
-    sql ='''SELECT Produit.idProduit, LibelleProduit, Prix, Description, Stock, imageProduit 
-    FROM Produit 
-    INNER JOIN BDD_lwilcza2.varie_de vd on Produit.idProduit = vd.idProduit INNER JOIN BDD_lwilcza2.Variations V on vd.idVariation = V.idVariation
+    sql ='''SELECT Produit.idProduit, LibelleProduit, Prix, Description, Stock, imageProduit
+        FROM Produit
+    INNER JOIN Variations V2 on Produit.idProduit = V2.idProduit
     WHERE Produit.idProduit = %s;
     '''
     mycursor.execute(sql,id)
     article = mycursor.fetchall()
-    sql ="SELECT * FROM Avis;"
-    mycursor.execute(sql)
+    sql ='''SELECT * FROM Avis
+            WHERE idProduit = %s;'''
+    mycursor.execute(sql,id)
     commentaires = mycursor.fetchall()
 
     sql ="SELECT * FROM Commande;"
