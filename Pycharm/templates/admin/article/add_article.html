@@ -5,9 +5,80 @@
 {% endblock %}
 
 {% block body %}
-  <h2>ajout d'un article</h2>
-  {% if error %}
-    <p class=error><strong>Error:</strong> {{ error }}
-  {% endif %}
-
+    <div class="container">
+        {% if error %}
+            <p class=error><strong>Error:</strong> {{ error }}
+        {% endif %}
+        <form action="{{ url_for('admin_article.valid_add_article') }}"  method="post">
+            <fieldset>
+                <legend><h2>Ajout d'un article</h2></legend>
+                <input type="hidden" name="id">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>
+                            <label for="nom">Nom</label>
+                        </th>
+                        <th>
+                            <input class="form-control" type="text" placeholder="Entrer votre nom" name="nom" required id="nom">
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="Description">Description</label>
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="Description" placeholder="Entrer la description du produit" required id="Description"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="Prix">Prix</label>
+                        </td>
+                        <td>
+                            <input class="form-control" type="number" step="0.01" name="Prix" placeholder="Prix" required id="Prix">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="TypeProduit">TypeProduit</label></td>
+                        <td>
+                            <select class="form-control" name="TypeProduit" required id="TypeProduit">
+                                <option value="">Sélectionner le type de produit</option>
+                                {% for type in TypeProduit %}
+                                    <option value="{{ type.id }}"> {{ type.LibelleType }} </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="Taille">Taille</label></td>
+                        <td>
+                            <select class="form-control" name="Taille" required id="Taille">
+                                <option value="">Sélectionner une taille si existant sur le produit</option>
+                                {% for type in Taille %}
+                                    <option value="{{ type.id }}"> {{ type.libelleTaille }} </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="Grade">Grade</label></td>
+                        <td>
+                            <select class="form-control" name="Grade" required id="Grade">
+                                <option value="">Sélectionner un grade d'impression si existant sur le produit</option>
+                                {% for type in Grade %}
+                                    <option value="{{ type.id }}"> {{ type.libelle }} </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <div class="center">
+                    <input class="form-control" type="submit" name="f1_submit" value="Valider">
+                </div>
+            </fieldset>
+        </form>
+    </div>
 {% endblock %}
