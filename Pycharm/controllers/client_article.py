@@ -8,15 +8,11 @@ from connexion_db import get_db
 client_article = Blueprint('client_article', __name__,
                         template_folder='templates')
 
+
 @client_article.route('/client/index')
 @client_article.route('/client/article/show')      # remplace /client
 def client_article_show():                                 # remplace client_index
     mycursor = get_db().cursor()
-
-
-
-
-    articles = []
     sql='''SELECT Produit.idProduit, LibelleProduit, Prix, Description, Stock, imageProduit
         FROM Produit
     INNER JOIN Variations V2 on Produit.idProduit = V2.idProduit;'''
