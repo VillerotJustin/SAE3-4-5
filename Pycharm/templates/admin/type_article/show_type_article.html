@@ -8,14 +8,15 @@
 <h3>Types d'article</h3>
 <a class="btn btn-outline-success" href="/admin/type_article/add">ajouter un type d'article</a>
 <br><br>
-<table class="table">
+<table class="table table-bordered" style="text-align: center;">
     <thead class="thead-dark">
-        <th>ID Type_Produit</th>
-        <th>Libelle Type_Produit</th>
+        <th scope="row">#</th>
+        <th>Type de produit</th>
+        <th>Actions</th>
     </thead>
     {% for type in type_article %}
         <tr>
-            <td>{{type.idType}}</td>
+            <th scope="row">{{type.idType}}</th>
             <td>{{type.LibelleType}}</td>
             <td>
                 <a href="/admin/type_article/edit/{{type.idType}}"><button class="btn btn-primary">Editer</button></a>

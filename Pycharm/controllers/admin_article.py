@@ -29,9 +29,9 @@ def show_type_article():
     type_article = mycursor.fetchall()
     return render_template('admin/type_article/show_type_article.html', type_article=type_article)
 
+
 @admin_article.route('/admin/type_article/add')
 def add_type_article():
-    mycursor = get_db().cursor()
     return render_template('admin/type_article/add_type_article.html')
 
 
@@ -43,6 +43,7 @@ def valid_add_type_article():
     mycursor.execute(sql, libelle)
     return render_template('admin/type_article/show_type_article.html')
 
+
 @admin_article.route('/admin/type_article/edit/<int:id>')
 def edit_type_article(id):
     mycursor = get_db().cursor()
@@ -52,7 +53,7 @@ def edit_type_article(id):
     return render_template('admin/type_article/edit_type_article.html')
 
 
-@admin_article.route('/admin/type_article/delete', methods=['GET'])
+@admin_article.route('/admin/type_article/delete/<int:id>', methods=['GET'])
 def delete_type_article():
     mycursor = get_db().cursor()
     id = request.args.get('id', '')
@@ -61,6 +62,7 @@ def delete_type_article():
     print("un type d'article supprimé, id :", id)
     flash(u"un type d'article supprimé, id : " + id)
     return redirect(url_for('admin_article.show_type_article'))
+
 
 @admin_article.route('/admin/article/add', methods=['GET'])
 def add_article():
@@ -79,6 +81,7 @@ def add_article():
     Grade = mycursor.fetchall()
 
     return render_template('admin/article/add_article.html', TypeProduit=TypeProduit, fournisseur=fournisseur, Taille=Taille, Grade=Grade)
+
 
 @admin_article.route('/admin/article/add', methods=['POST'])
 def valid_add_article():
@@ -99,6 +102,7 @@ def valid_add_article():
     flash(message)
     return redirect(url_for('admin_article.show_article'))
 
+
 @admin_article.route('/admin/article/delete/<int:id>', methods=['GET'])
 def delete_article(id):
     mycursor = get_db().cursor()
@@ -113,6 +117,7 @@ def delete_article(id):
     flash(message)
     return redirect(url_for('admin_article.show_article'))
 
+
 @admin_article.route('/admin/article/edit/<int:id>', methods=['GET'])
 def edit_article(id):
     mycursor = get_db().cursor()
@@ -120,7 +125,8 @@ def edit_article(id):
     types_articles = None
     return render_template('admin/article/edit_article.html', article=article, types_articles=types_articles)
 
-@admin_article.route('/admin/article/edit', methods=['POST'])
+
+@admin_article.route('/admin/article/edit/<int:id>', methods=['POST'])
 def valid_edit_article():
     mycursor = get_db().cursor()
     nom = request.form['nom']
@@ -136,3 +142,8 @@ def valid_edit_article():
     message = u'article modifié , nom:'+nom + '- type_article:' + type_article_id + ' - prix:' + prix + ' - stock:'+  stock + ' - description:' + description + ' - image:' + image
     flash(message)
     return redirect(url_for('admin_article.show_article'))
+
+
+@admin_article.route('/admin/type_article/details')
+def show_details_type_article():
+    return render_template('/admin/type_article/etat_type_article.html')

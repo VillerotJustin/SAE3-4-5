@@ -1,13 +1,16 @@
 {% extends 'admin/layout_admin.html' %}
-
 {% block title %}
-    <title>ajouter un type d'article</title>
+    <title>Ajouter un type d'article</title>
 {% endblock %}
-
 {% block body %}
-{#  <h2>ajout d'un type d'article</h2>#}
-  {% if error %}
-    <p class=error><strong>Error:</strong> {{ error }}
-  {% endif %}
-
+    <div id="container">
+        <h1>Ajout d'un nouveau type d'outil</h1>
+        <form action="/admin/type_article/show">
+            <div>
+                <label>Nom du type d'outil : </label>
+                <input id="libelle" class="form-control" type="text"><br>
+            </div>
+            <button type="submit" class="btn btn-primary">Créer le nouveau type d'outil</button>
+        </form>
+    </div>
 {% endblock %}
