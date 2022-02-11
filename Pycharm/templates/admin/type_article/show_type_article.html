@@ -6,8 +6,24 @@
 
 {% block body %}
 <h3>Types d'article</h3>
-<a class="btn btn-outline-success" href="/admin/type-article/add">ajouter un type d'article</a>
+<a class="btn btn-outline-success" href="/admin/type_article/add">ajouter un type d'article</a>
 <br><br>
+<table class="table">
+    <thead class="thead-dark">
+        <th>ID Type_Produit</th>
+        <th>Libelle Type_Produit</th>
+    </thead>
+    {% for type in type_article %}
+        <tr>
+            <td>{{type.idType}}</td>
+            <td>{{type.LibelleType}}</td>
+            <td>
+                <a href="/admin/type_article/edit/{{type.idType}}"><button class="btn btn-primary">Editer</button></a>
+                <a href="/admin/type_article/delete/{{type.idType}}"><button class="btn btn-danger">Supprimer</button></a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
 
 
 {% endblock %}

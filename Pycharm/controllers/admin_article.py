@@ -20,6 +20,48 @@ def show_article():
     articles = mycursor.fetchall()
     return render_template('admin/article/show_article.html', articles=articles)
 
+
+@admin_article.route('/admin/type_article/show')
+def show_type_article():
+    mycursor = get_db().cursor()
+    sql = '''SELECT * FROM TypeProduit;'''
+    mycursor.execute(sql)
+    type_article = mycursor.fetchall()
+    return render_template('admin/type_article/show_type_article.html', type_article=type_article)
+
+@admin_article.route('/admin/type_article/add')
+def add_type_article():
+    mycursor = get_db().cursor()
+    return render_template('admin/type_article/add_type_article.html')
+
+
+@admin_article.route('/admin/type_article_add', methods=['POST'])
+def valid_add_type_article():
+    libelle = request.form.get('libelle', '')
+    sql = '''INSERT INTO TypeProduit VALUES
+                (NULL, %s);'''
+    mycursor.execute(sql, libelle)
+    return render_template('admin/type_article/show_type_article.html')
+
+@admin_article.route('/admin/type_article/edit/<int:id>')
+def edit_type_article(id):
+    mycursor = get_db().cursor()
+    sql = '''SELECT * FROM TypeProduit WHERE idType=%s'''
+    mycursor.execute(sql, id)
+    type_article = mycursor.fetchall()
+    return render_template('admin/type_article/edit_type_article.html')
+
+
+@admin_article.route('/admin/type_article/delete', methods=['GET'])
+def delete_type_article():
+    mycursor = get_db().cursor()
+    id = request.args.get('id', '')
+    sql ='''DELETE FROM TypeProduit WHERE idType = %s'''
+    mycursor.execute(sql, id)
+    print("un type d'article supprimé, id :", id)
+    flash(u"un type d'article supprimé, id : " + id)
+    return redirect(url_for('admin_article.show_type_article'))
+
 @admin_article.route('/admin/article/add', methods=['GET'])
 def add_article():
     sql = '''SELECT * FROM TypeProduit;'''
@@ -56,7 +98,7 @@ def valid_add_article():
     return redirect(url_for('admin_article.show_article'))
 
 @admin_article.route('/admin/article/delete/<int:id>', methods=['GET'])
-def delete_article():
+def delete_article(id):
     mycursor = get_db().cursor()
     # id = request.args.get('id', '')
     id = request.form.get('id', '')
