@@ -3,15 +3,16 @@
 from flask import Blueprint
 from flask import Flask, request, render_template, redirect, url_for, abort, flash, session, g
 
+import pymysql.cursors
 from connexion_db import get_db
 
 admin_article = Blueprint('admin_article', __name__,
                         template_folder='templates')
-mycursor = get_db().cursor()
 
 
 @admin_article.route('/admin/article/show')
 def show_article():
+    mycursor = get_db().cursor()
     sql ='''SELECT Produit.idProduit, LibelleProduit, Prix, Description, Stock, imageProduit
             FROM Produit
             INNER JOIN Variations V2 on Produit.idProduit = V2.idProduit;'''
@@ -24,8 +25,6 @@ def add_article():
     sql = '''SELECT LibelleType FROM TypeProduit;'''
     mycursor.execute(sql)
     types_articles = mycursor.fetchall()
-
-    
 
     return render_template('admin/article/add_article.html', types_articles=types_articles)
 
@@ -47,14 +46,13 @@ def valid_add_article():
     flash(message)
     return redirect(url_for('admin_article.show_article'))
 
-@admin_article.route('/admin/article/delete', methods=['POST'])
+@admin_article.route('/admin/article/delete', methods=['GET'])
 def delete_article():
+    mycursor = get_db().cursor()
     # id = request.args.get('id', '')
     id = request.form.get('id', '')
-
     sql ='''DELETE FROM Produit WHERE idProduit = %s;'''
     mycursor.execute(sql, id)
-
     print("un article supprimé, id :", id)
     flash(u'un article supprimé, id : ' + id)
     return redirect(url_for('admin_article.show_article'))
