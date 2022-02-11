@@ -5,68 +5,11 @@
 {% endblock %}
 
 {% block body %}
+    <h2>ajout d'un article</h2>
+    <form action="admin/article/add"><button class="btn btn-primary" >Ajouter un produit</button></form><br>
     <div class="container">
         <div class="row align-self-right">
-            <div class="col-7">
-            {% if articlesPanier | length >= 1 %}
-                <h3>Liste des articles dans mon panier</h3>
-                <table class="table table-hover table-responsive">
-                    <tr>
-                        <th style="width: 300px">Nom</th>
-                        <th style="width: 50px">Quantité</th>
-                        <th style="width: 50px">Prix</th>
-                        <th style="width: 100px">Sous-Total</th>
-                        <th style="width: 400px">Action</th>
-                    </tr>
-                    {% if monPanier is defined %}
-                        <td>Votre panier est vide</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    {% else %}
-                    {% for itemPanier in articlesPanier %}
-                        <tr>
-                            <td>{{itemPanier.LibelleProduit}}</td>
-                            <td>{{itemPanier.quantite}}</td>
-                            <td>{{itemPanier.Prix}}</td>
-                            <td>{{ "{:,.2f} €".format((itemPanier.prix * itemPanier.quantite)) }}</td>
-                            <td>
-                               {% if itemPanier.Stock is defined and itemPanier.Stock > 0 %}
-                                <form action="/client/panier/add" style="display: inline-block;"  method="post">
-                                        <input type="hidden" name="quantite" value="1">
-                                        <input type="hidden" name="idArticle" value="{{ itemPanier.idProduit }}">
-                                    <button class="btn btn-primary" > + </button>
-                                </form>
-                               {% endif %}
-                                <form action="/client/panier/delete"  style="display: inline-block;"  method="post">
-                                    <input type="hidden" name="idArticle" value="{{ itemPanier.idProduit }}">
-                                    <button class="btn btn-primary" > - </button>
-                                </form>
-
-                                <form action="/client/panier/delete/line" style="display: inline-block;"  method="post">
-                                    <input type="hidden" name="idArticle" value="{{ itemPanier.idProduit }}">
-                                    <button class="btn btn-primary" >Supprimer</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    {% endif %}
-                </table>
-                    <form action="/client/panier/vider" style="display: inline-block;"  method="post" >
-                        <button class="btn btn-primary"  > Éffacer tout </button>
-                    </form>
-                    <form action="/client/commande/add" style="display: inline-block;"  method="post" >
-                        <button class="btn btn-primary" > Passer ma commande </button>
-                    </form>
-                    {% if prix_total %}
-                    Total à payer : <strong>{{ "{:,.2f} €".format(prix_total) }}</strong>
-                    {% endif %}
-            {% endif %}
-            </div>
-
-
-            <div class="col">
+            <div class="col-8">
               <h3>Les filtres</h3>
               Articles dont le nom est composé par :<br>
                  {% include('client/boutique/_filtre.html') %}
@@ -90,23 +33,23 @@
                                 </h2>
                                 <div class="card-body">
                                      {%  if article.imageProduit is not none %}
-                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/'+article.imageProduit) }}"  alt="image  de {{ article.LibelleProduit }}" >
-                                    {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.LibelleProduit }}" >
+                                        <img class="card-img-top rounded mx-auto d-block"  style="width:300px;height:100px"  src="{{ url_for('static', filename = 'images/'+article.imageProduit) }}"  alt="image  de {{ article.LibelleProduit }}" >
+                                    {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:300px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.LibelleProduit }}" >
                                     {% endif %}
                                     <hr>
                                 </div>
                                 </a>
                                 <div class="card-body">
-                                        <form action="/admin/article/edit" method="post">
+                                        <a href="/admin/article/edit?id={{ article.idProduit }}" method="post">
                                             <button class="btn btn-primary float-right">
                                                 Editer
                                              </button>
-                                        </form>
-                                    <form action="/admin/article/delete">
+                                        </a>
+                                    <a href="/admin/article/delete?id={{ article.idProduit }}">
                                         <button class="btn btn-danger float-right">
                                             Supprimer
                                         </button>
-                                    </form>
+                                    </a>
                                 </div>
                             </div>
                             <div class="card-footer">
