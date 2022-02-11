@@ -22,17 +22,26 @@ def show_article():
 
 @admin_article.route('/admin/article/add', methods=['GET'])
 def add_article():
-    sql = '''SELECT LibelleType FROM TypeProduit;'''
+    sql = '''SELECT * FROM TypeProduit;'''
     mycursor.execute(sql)
     types_articles = mycursor.fetchall()
+    sql = '''SELECT * FROM Fourniseur;'''
+    mycursor.execute(sql)
+    fournisseur = mycursor.fetchall()
+    sql = '''SELECT * FROM Taille;'''
+    mycursor.execute(sql)
+    taille = mycursor.fetchall()
+    sql = '''SELECT * FROM Grade;'''
+    mycursor.execute(sql)
+    grade = mycursor.fetchall()
 
-    return render_template('admin/article/add_article.html', types_articles=types_articles)
+    return render_template('admin/article/add_article.html', types_articles=types_articles, fournisseur=fournisseur, taille=taille, grade=grade)
 
 @admin_article.route('/admin/article/add', methods=['POST'])
 def valid_add_article():
     nom = request.form.get('nom', '')
     type_article_id = request.form.get('type_article_id', '')
-   # type_article_id = int(type_article_id)
+    # type_article_id = int(type_article_id)
     prix = request.form.get('prix', '')
     stock = request.form.get('stock', '')
     description = request.form.get('description', '')
@@ -46,11 +55,12 @@ def valid_add_article():
     flash(message)
     return redirect(url_for('admin_article.show_article'))
 
-@admin_article.route('/admin/article/delete', methods=['GET'])
+@admin_article.route('/admin/article/delete/<int:id>', methods=['GET'])
 def delete_article():
     mycursor = get_db().cursor()
     # id = request.args.get('id', '')
     id = request.form.get('id', '')
+    print(type(id))
     sql ='''DELETE FROM Produit WHERE idProduit = %s;'''
     mycursor.execute(sql, id)
     print("un article supprimé, id :", id)
