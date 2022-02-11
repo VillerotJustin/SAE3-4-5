@@ -40,12 +40,12 @@
                                 </div>
                                 </a>
                                 <div class="card-body">
-                                        <a href="/admin/article/edit?id={{ article.idProduit }}" method="post">
-                                            <button class="btn btn-primary float-right">
-                                                Editer
-                                             </button>
-                                        </a>
-                                    <a href="/admin/article/delete?id={{ article.idProduit }}">
+                                    <a href="/admin/article/edit/{{ article.idProduit }}" method="post">
+                                        <button class="btn btn-primary float-right">
+                                            Editer
+                                        </button>
+                                    </a>
+                                    <a href="/admin/article/delete/{{ article.idProduit }}" onclick="return confirm('Are you sure?')">
                                         <button class="btn btn-danger float-right">
                                             Supprimer
                                         </button>
