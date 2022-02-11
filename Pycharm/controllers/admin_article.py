@@ -64,23 +64,25 @@ def delete_type_article():
 
 @admin_article.route('/admin/article/add', methods=['GET'])
 def add_article():
+    mycursor = get_db().cursor()
     sql = '''SELECT * FROM TypeProduit;'''
     mycursor.execute(sql)
-    types_articles = mycursor.fetchall()
+    TypeProduit = mycursor.fetchall()
     sql = '''SELECT * FROM Fourniseur;'''
     mycursor.execute(sql)
     fournisseur = mycursor.fetchall()
     sql = '''SELECT * FROM Taille;'''
     mycursor.execute(sql)
-    taille = mycursor.fetchall()
+    Taille = mycursor.fetchall()
     sql = '''SELECT * FROM Grade;'''
     mycursor.execute(sql)
-    grade = mycursor.fetchall()
+    Grade = mycursor.fetchall()
 
-    return render_template('admin/article/add_article.html', types_articles=types_articles, fournisseur=fournisseur, taille=taille, grade=grade)
+    return render_template('admin/article/add_article.html', TypeProduit=TypeProduit, fournisseur=fournisseur, Taille=Taille, Grade=Grade)
 
 @admin_article.route('/admin/article/add', methods=['POST'])
 def valid_add_article():
+    mycursor = get_db().cursor()
     nom = request.form.get('nom', '')
     type_article_id = request.form.get('type_article_id', '')
     # type_article_id = int(type_article_id)
@@ -100,13 +102,15 @@ def valid_add_article():
 @admin_article.route('/admin/article/delete/<int:id>', methods=['GET'])
 def delete_article(id):
     mycursor = get_db().cursor()
-    # id = request.args.get('id', '')
-    id = request.form.get('id', '')
-    print(type(id))
-    sql ='''DELETE FROM Produit WHERE idProduit = %s;'''
+    sql = '''DELETE FROM Variations WHERE idProduit = %s;'''
     mycursor.execute(sql, id)
-    print("un article supprimé, id :", id)
-    flash(u'un article supprimé, id : ' + id)
+    get_db().commit()
+    sql = '''DELETE FROM Produit WHERE idProduit = %s;'''
+    mycursor.execute(sql, id)
+    get_db().commit()
+    print("un article supprimé, id :" + str(id))
+    message = ("un article supprimé, id :" + str(id))
+    flash(message)
     return redirect(url_for('admin_article.show_article'))
 
 @admin_article.route('/admin/article/edit/<int:id>', methods=['GET'])
@@ -118,6 +122,7 @@ def edit_article(id):
 
 @admin_article.route('/admin/article/edit', methods=['POST'])
 def valid_edit_article():
+    mycursor = get_db().cursor()
     nom = request.form['nom']
     id = request.form.get('id', '')
     type_article_id = request.form.get('type_article_id', '')
