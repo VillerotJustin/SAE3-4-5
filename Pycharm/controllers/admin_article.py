@@ -7,18 +7,26 @@ from connexion_db import get_db
 
 admin_article = Blueprint('admin_article', __name__,
                         template_folder='templates')
+mycursor = get_db().cursor()
+
 
 @admin_article.route('/admin/article/show')
 def show_article():
-    mycursor = get_db().cursor()
-    articles = None
-    # print(articles)
+    sql ='''SELECT Produit.idProduit, LibelleProduit, Prix, Description, Stock, imageProduit
+            FROM Produit
+            INNER JOIN Variations V2 on Produit.idProduit = V2.idProduit;'''
+    mycursor.execute(sql)
+    articles = mycursor.fetchall()
     return render_template('admin/article/show_article.html', articles=articles)
 
 @admin_article.route('/admin/article/add', methods=['GET'])
 def add_article():
-    mycursor = get_db().cursor()
-    types_articles = None
+    sql = '''SELECT LibelleType FROM TypeProduit;'''
+    mycursor.execute(sql)
+    types_articles = mycursor.fetchall()
+
+    
+
     return render_template('admin/article/add_article.html', types_articles=types_articles)
 
 @admin_article.route('/admin/article/add', methods=['POST'])
@@ -30,7 +38,9 @@ def valid_add_article():
     stock = request.form.get('stock', '')
     description = request.form.get('description', '')
     image = request.form.get('image', '')
-
+    sql = '''INSERT INTO Produit VALUES
+                (NULL, %s, %s, %s, NULL, NULL, NULL, NULL);'''  # A completer
+    mycursor.execute(sql,(nom, prix, description,))
 
     print(u'article ajouté , nom: ', nom, ' - type_article:', type_article_id, ' - prix:', prix, ' - stock:', stock, ' - description:', description, ' - image:', image)
     message = u'article ajouté , nom:'+nom + '- type_article:' + type_article_id + ' - prix:' + prix + ' - stock:'+  stock + ' - description:' + description + ' - image:' + image
@@ -41,6 +51,9 @@ def valid_add_article():
 def delete_article():
     # id = request.args.get('id', '')
     id = request.form.get('id', '')
+
+    sql ='''DELETE FROM Produit WHERE idProduit = %s;'''
+    mycursor.execute(sql, id)
 
     print("un article supprimé, id :", id)
     flash(u'un article supprimé, id : ' + id)
