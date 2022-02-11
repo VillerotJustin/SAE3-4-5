@@ -56,15 +56,17 @@ def valid_add_article():
     return redirect(url_for('admin_article.show_article'))
 
 @admin_article.route('/admin/article/delete/<int:id>', methods=['GET'])
-def delete_article():
+def delete_article(id):
     mycursor = get_db().cursor()
-    # id = request.args.get('id', '')
-    id = request.form.get('id', '')
-    print(type(id))
-    sql ='''DELETE FROM Produit WHERE idProduit = %s;'''
+    sql = '''DELETE FROM Variations WHERE idProduit = %s;'''
     mycursor.execute(sql, id)
-    print("un article supprimé, id :", id)
-    flash(u'un article supprimé, id : ' + id)
+    get_db().commit()
+    sql = '''DELETE FROM Produit WHERE idProduit = %s;'''
+    mycursor.execute(sql, id)
+    get_db().commit()
+    print("un article supprimé, id :" + str(id))
+    message = ("un article supprimé, id :" + str(id))
+    flash(message)
     return redirect(url_for('admin_article.show_article'))
 
 @admin_article.route('/admin/article/edit/<int:id>', methods=['GET'])
