@@ -1,19 +1,23 @@
+<h3>Les filtres</h3>
 <form method="post"  action="/client/panier/filtre"   style="display: inline-block">
+    Articles dont le nom est composé par :<br>
     <div class="form-group">
         <input name="filter_word"  type="text" placeholder="Recherche" size="10" class="form-control"
                value="{% if session['filter_word'] %}{{ session['filter_word'] }}{% endif %}"  >
     </div>
-   {% if itemsFiltre is defined %}
+   {% if filter_type_article is defined %}
     <div class="form-group">
         <h4>Types articles</h4>
-        {% for itemFiltre in itemsFiltre %}
-        <input type="checkbox" name="filter_types" value="{{ itemFiltre.id }}"
-               {% set idItem = itemFiltre.id | string %}
-               {% if session['filter_types'] %}
-                   {{ ' checked ' if (idItem in session['filter_types']) else '' }}
+        {% for ligne in filter_type_article %}
+        <input type="checkbox"
+               name="filter_type_article"
+               value="{{ ligne.id }}"
+               {% set idItem = ligne.id | string %}
+               {% if session['filter_type_article'] %}
+                   {{ ' checked ' if (idItem in session['filter_type_article']) else '' }}
                {% endif %}
 
-            >  {{ itemFiltre.libelle }}
+            >  {{ ligne.LibelleType }}
             <br/>
         {% endfor %}
     </div>

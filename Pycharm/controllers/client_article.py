@@ -18,16 +18,23 @@ def client_article_show():                                 # remplace client_ind
     INNER JOIN Variations V2 on Produit.idProduit = V2.idProduit;'''
     mycursor.execute(sql)
     article = mycursor.fetchall()
-    types_articles = []
-    sql="SELECT * FROM TypeProduit"
-    mycursor.execute(sql)
-    type_article = mycursor.fetchall()
     articles_panier = []
     sql="SELECT * FROM PanierUser"
     mycursor.execute(sql)
     panier = mycursor.fetchall()
     prix_total = None
-    return render_template('client/boutique/panier_article.html',  article=article, articlesPanier=articles_panier, prix_total=prix_total, itemsFiltre=types_articles)
+
+    # For filter
+
+    sql = "SELECT * FROM TypeProduit"
+    mycursor.execute(sql)
+    filter_type_article = mycursor.fetchall()
+
+    return render_template('client/boutique/panier_article.html'
+                           ,  article=article
+                           , articlesPanier=articles_panier
+                           , prix_total=prix_total
+                           , filter_type_article=filter_type_article)
 
 @client_article.route('/client/article/details/<int:id>', methods=['GET'])
 def client_article_details(id):
