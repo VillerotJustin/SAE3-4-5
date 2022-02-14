@@ -7,20 +7,69 @@
     </div>
    {% if filter_type_article is defined %}
     <div class="form-group">
-        <h4>Types articles</h4>
+        <h4>Types Produits</h4>
         {% for ligne in filter_type_article %}
         <input type="checkbox"
                name="filter_type_article"
-               value="{{ ligne.id }}"
-               {% set idItem = ligne.id | string %}
+               value="{{ ligne.idType }}"
+               {% set idItem = ligne.idType | string %}
                {% if session['filter_type_article'] %}
-                   {{ ' checked ' if (idItem in session['filter_type_article']) else '' }}
+                   {% if idItem in session['filter_type_article'] %} checked {% endif %}
+                        {{ ' checked ' if (idItem in session['filter_type_article']) else '' }}
                {% endif %}
 
             >  {{ ligne.LibelleType }}
             <br/>
         {% endfor %}
     </div>
+    {% endif %}
+    {% if filter_Grade is defined %}
+        <div class="form-group">
+            <h4>Grade</h4>
+            {% for ligne in filter_Grade %}
+            <input type="checkbox"
+                   name="filter_Grade"
+                   value="{{ ligne.idGrade }}"
+                   {% set idItem = ligne.idGrade | string %}
+                   {% if session['filter_Grade'] %}
+                       {{ ' checked ' if (idItem in session['filter_Grade']) else '' }}
+                   {% endif %}
+                >  {{ ligne.Libelle }} / {{ ligne.abreviation }}
+                <br/>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if filter_Taille is defined %}
+        <div class="form-group">
+            <h4>Taille</h4>
+            {% for ligne in filter_Taille %}
+            <input type="checkbox"
+                   name="filter_Grade"
+                   value="{{ ligne.idTaille }}"
+                   {% set idItem = ligne.idTaille | string %}
+                   {% if session['filter_Taille'] %}
+                       {{ ' checked ' if (idItem in session['filter_Taille']) else '' }}
+                   {% endif %}
+                >  {{ ligne.LibelleTaille }}
+                <br/>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if filter_Fournisseur is defined %}
+        <div class="form-group">
+            <h4>Fournisseur</h4>
+            {% for ligne in filter_Fournisseur %}
+            <input type="checkbox"
+                   name="filter_Fournisseur"
+                   value="{{ ligne.idFourniseur }}"
+                   {% set idItem = ligne.idFourniseur | string %}
+                   {% if session['filter_Fournisseur'] %}
+                       {{ ' checked ' if (idItem in session['filter_Fournisseur']) else '' }}
+                   {% endif %}
+                >  {{ ligne.libelleFourniseur }}
+                <br/>
+            {% endfor %}
+        </div>
     {% endif %}
 
     <div class="form-group">
@@ -33,7 +82,7 @@
     </div>
     <button type="submit" class="btn btn-primary" style="display: inline-block;">Filtrer</button>
 </form>
-{% if session['filter_word'] or session['filter_prix_max'] or session['filter_prix_min'] or session['filter_types']%}
+{% if session['filter_word'] or session['filter_prix_max'] or session['filter_prix_min'] or session['filter_type_article'] or session['filter_Grade'] or session['filter_Taille'] or session['filter_Fournisseur']%}
 <form  action="/client/panier/filtre/suppr"  style="display: inline-block; margin: 5px;"  method="post" >
 <button class="btn btn-primary" > Supprimer filtre </button>
 </form>
