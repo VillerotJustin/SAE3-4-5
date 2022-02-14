@@ -60,6 +60,7 @@ def client_article_show():                                 # remplace client_ind
                 sql = sql + " or "
             list_param.append(item)
         sql = sql + ")"
+        condition_and = " AND "
 
     print('test Grade article ')
     if "filter_Grade" in session:
@@ -71,6 +72,7 @@ def client_article_show():                                 # remplace client_ind
                 sql = sql + " or "
             list_param.append(item)
         sql = sql + ")"
+        condition_and = " AND "
 
     print('test Taille article ')
     if "filter_Taille" in session:
@@ -82,6 +84,7 @@ def client_article_show():                                 # remplace client_ind
                 sql = sql + " or "
             list_param.append(item)
         sql = sql + ")"
+        condition_and = " AND "
 
     print('test Taille article ')
     if "filter_Fournisseur" in session:
@@ -93,6 +96,7 @@ def client_article_show():                                 # remplace client_ind
                 sql = sql + " or "
             list_param.append(item)
         sql = sql + ")"
+        condition_and = " AND "
 
     print('resultat fin')
     tuple_sql = tuple(list_param)

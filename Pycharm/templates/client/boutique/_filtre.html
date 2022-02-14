@@ -44,7 +44,7 @@
             <h4>Taille</h4>
             {% for ligne in filter_Taille %}
             <input type="checkbox"
-                   name="filter_Grade"
+                   name="filter_Taille"
                    value="{{ ligne.idTaille }}"
                    {% set idItem = ligne.idTaille | string %}
                    {% if session['filter_Taille'] %}
