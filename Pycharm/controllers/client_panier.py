@@ -55,10 +55,7 @@ def client_panier_filtre():
 
     if filter_word or filter_word == "":
         if len(filter_word) > 1:
-            if filter_word.isalpha():
-                session['filter_word'] = filter_word
-            else:
-                flash(u'votre Mot recherché doit uniquement être composé de lettres')
+            session['filter_word'] = filter_word
         else:
             if len(filter_word) == 1:
                 flash(u'votre Mot recherché doit être composé d\'au moins 2 lettres')
