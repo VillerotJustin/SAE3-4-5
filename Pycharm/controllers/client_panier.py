@@ -115,7 +115,6 @@ def client_panier_filtre():
         else:
             flash(u'min < max')
 
-
     return redirect('/client/article/show')
     # return redirect(url_for('client_index'))
 
