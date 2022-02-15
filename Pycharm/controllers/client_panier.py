@@ -113,8 +113,8 @@ def client_panier_filtre():
         print("max " + str(filter_prix_max))
         print(20 < 100)
         if (float(filter_prix_min) <= float(filter_prix_max)):
-            session['filter_prix_min'] = filter_prix_min
-            session['filter_prix_max'] = filter_prix_max
+            session['filter_prix_min'] = int(filter_prix_min)
+            session['filter_prix_max'] = int(filter_prix_max)
             print(session['filter_prix_min'])
             print(session['filter_prix_max'])
 

@@ -77,8 +77,8 @@ def admin_panier_filtre():
     print("filter_prix : ")
     if filter_prix_min or filter_prix_max:
         if filter_prix_min < filter_prix_max:
-            session['filter_prix_min'] = filter_prix_min
-            session['filter_prix_max'] = filter_prix_max
+            session['filter_prix_min'] = int(filter_prix_min)
+            session['filter_prix_max'] = int(filter_prix_max)
         else:
             flash(u'min < max')
 
