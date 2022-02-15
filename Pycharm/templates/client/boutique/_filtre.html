@@ -1,5 +1,5 @@
 <h3>Les filtres</h3>
-<form method="post"  {% if session['role'] == 'admin' %} action="/client/panier/filtre" {% else %} action="/admin/panier/filtre" {% endif %} style="display: inline-block">
+<form method="post"  {% if session['role'] == 'ROLE_client' %} action="/client/panier/filtre" {% else %} action="/admin/panier/filtre" {% endif %} style="display: inline-block">
     Articles dont le nom est composé par :<br>
     <div class="form-group">
         <input name="filter_word"  type="text" placeholder="Recherche" size="10" class="form-control"
@@ -74,16 +74,16 @@
 
     <div class="form-group">
         <h5>Prix :</h5>
-         <input name="filter_prix_min"  type="text" placeholder="min"  size="3"
+         <input name="filter_prix_min"  type="number" step="0.01" placeholder="min"  size="6"
             value="{% if session['filter_prix_min'] %}{{ session['filter_prix_min'] }}{% endif %}" >
 
-       <input name="filter_prix_max"  type="text" placeholder="max"  size="3"
+       <input name="filter_prix_max"  type="number" step="0.01" placeholder="max"  size="6"
              value="{% if session['filter_prix_max'] %}{{ session['filter_prix_max'] }}{% endif %}" >
     </div>
     <button type="submit" class="btn btn-primary" style="display: inline-block;">Filtrer</button>
 </form>
 {% if session['filter_word'] or session['filter_prix_max'] or session['filter_prix_min'] or session['filter_type_article'] or session['filter_Grade'] or session['filter_Taille'] or session['filter_Fournisseur']%}
-<form  {% if session['role'] == 'admin' %} action="/client/panier/filtre/suppr" {% else %} action="/admin/panier/filtre/suppr" {% endif %}  style="display: inline-block; margin: 5px;"  method="post" >
+<form  {% if session['role'] == 'ROLE_client' %} action="/client/panier/filtre/suppr" {% else %} action="/admin/panier/filtre/suppr" {% endif %}  style="display: inline-block; margin: 5px;"  method="post" >
 <button class="btn btn-primary" > Supprimer filtre </button>
 </form>
 {% endif %}
