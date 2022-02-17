@@ -12,6 +12,8 @@ client_article = Blueprint('client_article', __name__,
 @client_article.route('/client/index')
 @client_article.route('/client/article/show')      # remplace /client
 def client_article_show():                                 # remplace client_index
+
+    # Affichage filtre
     mycursor = get_db().cursor()
     sql = '''SELECT Produit.*, V2.*
         FROM Produit 
@@ -105,10 +107,10 @@ def client_article_show():                                 # remplace client_ind
     mycursor.execute(sql, tuple_sql)
     article = mycursor.fetchall()
 
+    # Affichage Panier
     print()
-    print('Panier test')
+    print('Panier affichage')
     print('id user : ', session['user_id'])
-
     articles_panier = []
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
     idPanier = mycursor.execute(sql, session['user_id'])

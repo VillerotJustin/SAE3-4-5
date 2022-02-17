@@ -9,7 +9,7 @@ client_panier = Blueprint('client_panier', __name__,
                           template_folder='templates')
 
 
-@client_panier.route('/client/panier/add', methods=['POST'])  # Finish ?
+@client_panier.route('/client/panier/add', methods=['POST'])  # Fini
 def client_panier_add():
     mycursor = get_db().cursor()
     idProduit = request.form.get('idProduit', None)
@@ -56,7 +56,7 @@ def client_panier_delete():
     # return redirect(url_for('client_index'))
 
 
-@client_panier.route('/client/panier/vider', methods=['POST'])  # Fini ?
+@client_panier.route('/client/panier/vider', methods=['POST'])  # Fini
 def client_panier_vider():
     mycursor = get_db().cursor()
 

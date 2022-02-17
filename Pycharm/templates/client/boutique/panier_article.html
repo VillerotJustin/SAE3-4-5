@@ -13,7 +13,7 @@
                         <th style="width: 100px">Sous-Total</th>
                         <th style="width: 400px">Action</th>
                     </tr>
-                    {% if monPanier is defined %}
+                    {% if monPanier is not defined %}
                         <td>Votre panier est vide</td>
                         <td></td>
                         <td></td>
@@ -25,7 +25,7 @@
                             <td>{{itemPanier.LibelleProduit}}</td>
                             <td>{{itemPanier.quantite}}</td>
                             <td>{{itemPanier.Prix}}</td>
-                            <td>{{ "{:,.2f} €".format((itemPanier.prix * itemPanier.quantite)) }}</td>
+                            <td>{{ "{:,.2f} €".format((itemPanier.Prix * itemPanier.quantite)) }}</td>
                             <td>
                                {% if itemPanier.Stock is defined and itemPanier.Stock > 0 %}
                                 <form action="/client/panier/add" style="display: inline-block;"  method="post">
