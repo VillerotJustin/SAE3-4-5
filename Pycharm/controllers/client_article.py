@@ -107,7 +107,25 @@ def client_article_show():                                 # remplace client_ind
 
 
     articles_panier = []
-    sql="SELECT * FROM PanierUser"
+    sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
+    mycursor.execute(sql, session['user_id'])
+    idPanier = mycursor.fetchall()
+
+    sql = '''SELECT contient,*
+                    , Produit.LibelleProduit
+                    , Produit.Prix
+        FROM contient
+        INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
+        WHERE contient.idPanier = %s'''
+    mycursor.execute(sql, idPanier)
+    monPanier = mycursor.fetchall()
+
+    sql = '''SELECT SUM(contient.quantite * Produit.Prix)
+            FROM contient
+            INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
+            WHERE contient.idPanier = %s'''
+    mycursor.execute(sql, idPanier)
+    monPanier = mycursor.fetchall()
     mycursor.execute(sql)
     panier = mycursor.fetchall()
     prix_total = None
@@ -137,7 +155,8 @@ def client_article_show():                                 # remplace client_ind
                            , filter_type_article=filter_type_article
                            , filter_Grade=filter_Grade
                            , filter_Taille=filter_Taille
-                           , filter_Fournisseur=filter_Fournisseur)
+                           , filter_Fournisseur=filter_Fournisseur
+                           , monPanier=monPanier)
 
 @client_article.route('/client/article/details/<int:id>', methods=['GET'])
 def client_article_details(id):
