@@ -13,6 +13,7 @@ client_panier = Blueprint('client_panier', __name__,
 def client_panier_add():
     mycursor = get_db().cursor()
     idProduit = request.form.get('idProduit', None)
+    quantite = request.form.get('quantite', None)
     print('ajout panier')
     # Id Panier
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
@@ -35,13 +36,15 @@ def client_panier_add():
     test = mycursor.fetchall()
     print('test : ', test)
     if (test is None or test == ()):
+        tuple_Panier = (idProduit, idPanier, quantite)
         print('produit pas dans le panier')
-        sql = "INSERT INTO contient VALUES (%s, %s, 1)"
+        sql = "INSERT INTO contient VALUES (%s, %s, %s)"
         mycursor.execute(sql, tuple_Panier)
         get_db().commit()
     else:
         print('produit dans le panier')
-        sql = "UPDATE contient set quantite=(quantite+1) WHERE idProduit = %s AND idPanier = %s;"
+        tuple_Panier = (quantite, idProduit, idPanier)
+        sql = "UPDATE contient set quantite=(quantite+ %s) WHERE idProduit = %s AND idPanier = %s;"
         mycursor.execute(sql, tuple_Panier)
         get_db().commit()
     return redirect('/client/article/show')
@@ -50,9 +53,8 @@ def client_panier_add():
 
 @client_panier.route('/client/panier/delete', methods=['POST'])
 def client_panier_delete():
-    # Diminue la quantite
     mycursor = get_db().cursor()
-
+    idProduit = request.form.get('idProduit', None)
     # Id Panier
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
     idPanier = mycursor.execute(sql, session['user_id'])
@@ -63,6 +65,26 @@ def client_panier_delete():
         get_db().commit()
         sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
         idPanier = mycursor.execute(sql, session['user_id'])
+
+    # Diminue la quantite
+    print('Diminution de la quantite')
+    tuple_Panier = (idProduit, idPanier)
+    # test quantite
+    sql = "SELECT contient.quantite FROM contient WHERE idProduit = %s AND idPanier = %s;"
+    mycursor.execute(sql, tuple_Panier)
+    test_quantite = mycursor.fetchone()
+    test_quantite = test_quantite["quantite"]
+    print('test quantite : ', test_quantite)
+
+
+    if (test_quantite == 1):
+        sql = "DELETE FROM contient WHERE idProduit = %s AND idPanier = %s;"
+        mycursor.execute(sql, tuple_Panier)
+        get_db().commit()
+    else:
+        sql = "UPDATE contient set quantite=(quantite-1) WHERE idProduit = %s AND idPanier = %s;"
+        mycursor.execute(sql, tuple_Panier)
+        get_db().commit()
 
     return redirect('/client/article/show')
     # return redirect(url_for('client_index'))
