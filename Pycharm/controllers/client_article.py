@@ -124,12 +124,15 @@ def client_article_show():                                 # remplace client_ind
     mycursor.execute(sql, idPanier)
     monPanier = mycursor.fetchall()
 
-    sql = '''SELECT SUM(contient.quantite * Produit.Prix)
+    # Prix total
+    sql = '''SELECT SUM(contient.quantite * Produit.Prix) AS Prix_Total
             FROM contient
             INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
             WHERE contient.idPanier = %s'''
     mycursor.execute(sql, idPanier)
-    prix_total = mycursor.fetchall()
+    prix_total = mycursor.fetchone()
+    print('Prix_Total : ', prix_total["Prix_Total"])
+    prix_total = prix_total["Prix_Total"]
 
     # For filter
 
