@@ -80,6 +80,8 @@ def auth_signup_post():
     session['username'] = username
     session['role'] = 'ROLE_client'
     session['user_id'] = user_id
+    mycursor.execute(sql)
+    get_db().commit()
     return redirect('/client/article/show')
     #return redirect(url_for('client_index'))
 

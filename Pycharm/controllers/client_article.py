@@ -105,13 +105,15 @@ def client_article_show():                                 # remplace client_ind
     mycursor.execute(sql, tuple_sql)
     article = mycursor.fetchall()
 
+    print()
+    print('Panier test')
+    print('id user : ', session['user_id'])
 
     articles_panier = []
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
-    mycursor.execute(sql, session['user_id'])
-    idPanier = mycursor.fetchall()
-
-    sql = '''SELECT contient,*
+    idPanier = mycursor.execute(sql, session['user_id'])
+    print('id panier : ', idPanier)
+    sql = '''SELECT contient.*
                     , Produit.LibelleProduit
                     , Produit.Prix
         FROM contient
@@ -125,10 +127,7 @@ def client_article_show():                                 # remplace client_ind
             INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
             WHERE contient.idPanier = %s'''
     mycursor.execute(sql, idPanier)
-    monPanier = mycursor.fetchall()
-    mycursor.execute(sql)
-    panier = mycursor.fetchall()
-    prix_total = None
+    prix_total = mycursor.fetchall()
 
     # For filter
 

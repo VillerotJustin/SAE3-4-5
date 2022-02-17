@@ -12,7 +12,39 @@ client_panier = Blueprint('client_panier', __name__,
 @client_panier.route('/client/panier/add', methods=['POST'])
 def client_panier_add():
     mycursor = get_db().cursor()
+    idProduit = request.form.get('idProduit', None)
+    print('ajout panier')
+    # Id Panier
+    sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
+    idPanier = mycursor.execute(sql, session['user_id'])
+    if (idPanier is None):
+        print('Panier inexistant création panier')
+        sql = "INSERT INTO PanierUser VALUES (NULL , %s)"
+        mycursor.execute(sql, session['user_id'])
+        get_db().commit()
+        sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
+        idPanier = mycursor.execute(sql, session['user_id'])
 
+
+    # Ajout dans le panier
+    print('id Produit : ', idProduit)
+    print('id panier : ', idPanier)
+    tuple_Panier = (idProduit, idPanier)
+    print('tuple : ', tuple_Panier)
+    sql = "SELECT * FROM contient WHERE idProduit = %s AND idPanier = %s;"
+    mycursor.execute(sql, tuple_Panier)
+    test = mycursor.fetchall()
+    print('test : ', test)
+    if (test is None or test == ()):
+        print('produit pas dans le panier')
+        sql = "INSERT INTO contient VALUES (%s, %s, 1)"
+        mycursor.execute(sql, tuple_Panier)
+        get_db().commit()
+    else:
+        print('produit dans le panier')
+        sql = "UPDATE contient set quantite=(quantite+1) WHERE idProduit = %s AND idPanier = %s;"
+        mycursor.execute(sql, tuple_Panier)
+        get_db().commit()
     return redirect('/client/article/show')
     # return redirect(url_for('client_index'))
 
