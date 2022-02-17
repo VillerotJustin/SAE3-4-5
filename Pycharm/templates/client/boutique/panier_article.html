@@ -34,7 +34,7 @@
                                 {% if itemPanier.Stock is defined and itemPanier.Stock > itemPanier.quantite %}
                                 <form action="/client/panier/add" style="display: inline-block;"  method="post">
                                         <input type="hidden" name="quantite" value="1">
-                                        <input type="hidden" name="idArticle" value="{{ itemPanier.idProduit }}">
+                                        <input type="hidden" name="idProduit" value="{{ itemPanier.idProduit }}">
                                     <button class="btn btn-primary" > + </button>
                                 </form>
                                {% endif %}
