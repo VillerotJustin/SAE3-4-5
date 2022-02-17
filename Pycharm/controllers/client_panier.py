@@ -50,7 +50,19 @@ def client_panier_add():
 
 @client_panier.route('/client/panier/delete', methods=['POST'])
 def client_panier_delete():
+    # Diminue la quantite
     mycursor = get_db().cursor()
+
+    # Id Panier
+    sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
+    idPanier = mycursor.execute(sql, session['user_id'])
+    if (idPanier is None):
+        print('Panier inexistant création panier')
+        sql = "INSERT INTO PanierUser VALUES (NULL , %s)"
+        mycursor.execute(sql, session['user_id'])
+        get_db().commit()
+        sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
+        idPanier = mycursor.execute(sql, session['user_id'])
 
     return redirect('/client/article/show')
     # return redirect(url_for('client_index'))
@@ -82,7 +94,29 @@ def client_panier_vider():
 
 @client_panier.route('/client/panier/delete/line', methods=['POST'])
 def client_panier_delete_line():
+    idProduit = request.form.get('idProduit', None)
     mycursor = get_db().cursor()
+
+    # Id Panier
+    sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
+    idPanier = mycursor.execute(sql, session['user_id'])
+    if (idPanier is None):
+        print('Panier inexistant création panier')
+        sql = "INSERT INTO PanierUser VALUES (NULL , %s)"
+        mycursor.execute(sql, session['user_id'])
+        get_db().commit()
+        sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
+        idPanier = mycursor.execute(sql, session['user_id'])
+
+    # Supprime la ligne
+    tuple_delete = (idPanier, idProduit)
+    print('Delete line')
+    print('id Produit : ', idProduit)
+    print('id panier : ', idPanier)
+    print('tuple_delete : ', tuple_delete)
+    sql = "DELETE FROM contient Where idPanier = %s AND idProduit = %s"
+    mycursor.execute(sql, tuple_delete)
+    get_db().commit()
 
     return redirect('/client/article/show')
     # return redirect(url_for('client_index'))

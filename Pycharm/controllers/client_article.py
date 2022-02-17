@@ -118,8 +118,10 @@ def client_article_show():                                 # remplace client_ind
     sql = '''SELECT contient.*
                     , Produit.LibelleProduit
                     , Produit.Prix
+                    , Variation.Stock
         FROM contient
         INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
+        INNER JOIN Variations Variation on Produit.idProduit = Variation.idProduit
         WHERE contient.idPanier = %s'''
     mycursor.execute(sql, idPanier)
     monPanier = mycursor.fetchall()

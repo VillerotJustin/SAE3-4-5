@@ -27,20 +27,19 @@
                             <td>{{itemPanier.Prix}}</td>
                             <td>{{ "{:,.2f} €".format((itemPanier.Prix * itemPanier.quantite)) }}</td>
                             <td>
-                               {% if itemPanier.Stock is defined and itemPanier.Stock > 0 %}
+                                <form action="/client/panier/delete"  style="display: inline-block;"  method="post">
+                                    <input type="hidden" name="idProduit" value="{{ itemPanier.idProduit }}">
+                                    <button class="btn btn-primary" > - </button>
+                                </form>
+                                {% if itemPanier.Stock is defined and itemPanier.Stock > 0 %}
                                 <form action="/client/panier/add" style="display: inline-block;"  method="post">
                                         <input type="hidden" name="quantite" value="1">
                                         <input type="hidden" name="idArticle" value="{{ itemPanier.idProduit }}">
                                     <button class="btn btn-primary" > + </button>
                                 </form>
                                {% endif %}
-                                <form action="/client/panier/delete"  style="display: inline-block;"  method="post">
-                                    <input type="hidden" name="idArticle" value="{{ itemPanier.idProduit }}">
-                                    <button class="btn btn-primary" > - </button>
-                                </form>
-
                                 <form action="/client/panier/delete/line" style="display: inline-block;"  method="post">
-                                    <input type="hidden" name="idArticle" value="{{ itemPanier.idProduit }}">
+                                    <input type="hidden" name="idProduit" value="{{ itemPanier.idProduit }}">
                                     <button class="btn btn-primary" >Supprimer</button>
                                 </form>
                             </td>
@@ -57,6 +56,22 @@
                     {% if prix_total %}
                     Total à payer : <strong>{{ "{:,.2f} €".format(prix_total) }}</strong>
                     {% endif %}
+            {% else %}
+                <h3>Liste des articles dans mon panier</h3>
+                <table class="table table-hover table-responsive">
+                    <tr>
+                        <th style="width: 300px">Nom</th>
+                        <th style="width: 50px">Quantité</th>
+                        <th style="width: 50px">Prix</th>
+                        <th style="width: 100px">Sous-Total</th>
+                        <th style="width: 400px">Action</th>
+                    </tr>
+                        <td>Votre panier est vide</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                </table>
             {% endif %}
             </div>
 
