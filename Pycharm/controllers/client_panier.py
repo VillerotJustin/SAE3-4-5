@@ -9,7 +9,7 @@ client_panier = Blueprint('client_panier', __name__,
                           template_folder='templates')
 
 
-@client_panier.route('/client/panier/add', methods=['POST'])
+@client_panier.route('/client/panier/add', methods=['POST'])  # Finish ?
 def client_panier_add():
     mycursor = get_db().cursor()
     idProduit = request.form.get('idProduit', None)
@@ -24,7 +24,6 @@ def client_panier_add():
         get_db().commit()
         sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
         idPanier = mycursor.execute(sql, session['user_id'])
-
 
     # Ajout dans le panier
     print('id Produit : ', idProduit)
@@ -57,9 +56,25 @@ def client_panier_delete():
     # return redirect(url_for('client_index'))
 
 
-@client_panier.route('/client/panier/vider', methods=['POST'])
+@client_panier.route('/client/panier/vider', methods=['POST'])  # Fini ?
 def client_panier_vider():
     mycursor = get_db().cursor()
+
+    # Id Panier
+    sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
+    idPanier = mycursor.execute(sql, session['user_id'])
+    if (idPanier is None):
+        print('Panier inexistant création panier')
+        sql = "INSERT INTO PanierUser VALUES (NULL , %s)"
+        mycursor.execute(sql, session['user_id'])
+        get_db().commit()
+        sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
+        idPanier = mycursor.execute(sql, session['user_id'])
+
+    # Vide le panier
+    sql = "DELETE FROM contient Where idPanier = %s"
+    mycursor.execute(sql, idPanier)
+    get_db().commit()
 
     return redirect('/client/article/show')
     # return redirect(url_for('client_index'))
@@ -73,7 +88,7 @@ def client_panier_delete_line():
     # return redirect(url_for('client_index'))
 
 
-@client_panier.route('/client/panier/filtre', methods=['POST'])
+@client_panier.route('/client/panier/filtre', methods=['POST'])  # Fini
 def client_panier_filtre():
     mycursor = get_db().cursor()
     filter_word = request.form.get('filter_word', None)
@@ -157,7 +172,7 @@ def client_panier_filtre():
     # return redirect(url_for('client_index'))
 
 
-@client_panier.route('/client/panier/filtre/suppr', methods=['POST'])
+@client_panier.route('/client/panier/filtre/suppr', methods=['POST'])  # Fini
 def client_panier_filtre_suppr():
     session.pop('filter_word', None)
     session.pop('filter_type_article', None)
