@@ -105,12 +105,6 @@ def show_article():
     mycursor.execute(sql, tuple_sql)
     article = mycursor.fetchall()
 
-    articles_panier = []
-    sql = "SELECT * FROM PanierUser"
-    mycursor.execute(sql)
-    panier = mycursor.fetchall()
-    prix_total = None
-
     # For filter
 
     sql = "SELECT * FROM TypeProduit"
@@ -130,9 +124,7 @@ def show_article():
     filter_Fournisseur = mycursor.fetchall()
 
     return render_template('admin/article/show_article.html'
-                           , article=article
-                           , articlesPanier=articles_panier
-                           , prix_total=prix_total
+                           , articles=article
                            , filter_type_article=filter_type_article
                            , filter_Grade=filter_Grade
                            , filter_Taille=filter_Taille
