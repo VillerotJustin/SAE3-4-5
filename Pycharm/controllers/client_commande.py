@@ -73,7 +73,6 @@ def client_commande_add():
     mycursor.execute(sql, idPanier)
     lignes = mycursor.fetchall()
     print('lignes panier : ', lignes)
-    print('lignes panier 1 : ', lignes[1])
     # insere les données
     print()
     print('insere les données')
@@ -102,7 +101,7 @@ def client_commande_show():
     mycursor = get_db().cursor()
 
     # recupperation de l'id de la commande a traiter
-    idCommande = request.form.get('idCommande', None)
+    idCommande = request.form.get('idCommande', 0)
     print('idCommande : ', idCommande)
 
     # Recuperation des commandes
@@ -117,8 +116,10 @@ def client_commande_show():
              INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
              INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
              INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
+             WHERE Commande.idUser = %s
+             GROUP BY Commande.idCommande
     '''
-    mycursor.execute(sql)
+    mycursor.execute(sql, session['user_id'])
     commandes = mycursor.fetchall()
 
     # Affichage de la commande a traiter
