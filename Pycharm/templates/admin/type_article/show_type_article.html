@@ -20,7 +20,7 @@
             <td>{{type.LibelleType}}</td>
             <td>
                 <a href="/admin/type_article/edit/{{type.idType}}"><button class="btn btn-primary">Editer</button></a>
-                <a href="/admin/type_article/delete/{{type.idType}}"><button class="btn btn-danger">Supprimer</button></a>
+                <a href="/admin/type_article/delete/confirm/{{type.idType}}" onclick="return confirm('Are you sure?')"><button class="btn btn-danger">Supprimer</button></a>
             </td>
         </tr>
     {% endfor %}

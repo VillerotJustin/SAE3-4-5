@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f86f7413-97b4-4db3-9597-c90efd18619b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f51da5e1-b930-4c2b-b915-7d79a8a1e93f.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f51da5e1-b930-4c2b-b915-7d79a8a1e93f.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pycharm/controllers/admin_article.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/controllers/admin_article.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/_nav_admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/_nav_admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/article/add_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/article/add_article.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/article/show_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/article/show_article.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/add_type_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/add_type_article.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/delete_type_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/delete_type_article.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/edit_type_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/edit_type_article.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/show_type_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/show_type_article.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/templates/auth/forget_password.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/auth/forget_password.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,6 +72,7 @@
       <workItem from="1644478793931" duration="4155000" />
       <workItem from="1644579237866" duration="3299000" />
       <workItem from="1644586225459" duration="6845000" />
+      <workItem from="1645215198382" duration="1248000" />
     </task>
     <servers />
   </component>
@@ -80,6 +80,6 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/SAE3_4_5$Flask__Pycharm_app_etu_py_.coverage" NAME="Flask (Pycharm/app_etu.py) Coverage Results" MODIFIED="1644592680948" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SAE3_4_5$Flask__Pycharm_app_etu_py_.coverage" NAME="Flask (Pycharm/app_etu.py) Coverage Results" MODIFIED="1645216442461" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

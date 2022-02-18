@@ -9,16 +9,17 @@
 <br>
 <h3>Il y a <span style="color:red;"> {{ nbr_articles.nbr_articles }} </span> article(s) à supprimer</h3>
 <br>
+{# <a class="btn btn-danger" style="color:white" href="/admin/type_article/delete/">Tout supprimer</a><br> #}
 <ul>
 {% if articles | length >= 1 %}
 
         {% for ligne in articles %}
         <li>
-                 nom : {{ ligne.nom }} -  stock : {{ ligne.stock }} - <a class="btn btn-outline-danger" href="/admin/type-article/delete?id={{ ligne.type_article_id }}&amp;id_article={{ligne.id}}" >supprimer</a>
+                 nom : {{ ligne.LibelleProduit }} -  stock : {{ ligne.Stock }} - <a class="btn btn-outline-danger" href="/admin/type_article/delete?id={{ ligne.idType }}&amp;id_article={{ligne.idProduit}}" >supprimer</a>
         </li><br>
         {% endfor %}
 
 {% endif %}
 </ul>
-<a class="btn btn-outline-warning" href="/admin/type-article/show" >annuler</a>
+<a class="btn btn-outline-warning" href="/admin/type_article/show" >annuler</a>
 {% endblock %}

@@ -8,7 +8,7 @@
   {% if error %}
     <p class=error><strong>Error:</strong> {{ error }}
   {% endif %}
-  <form method="post" action="/admin/type-article/edit">
+  <form method="post" action="/admin/type_article/edit">
     <fieldset>
         <legend> Modifier un type d'article</legend>
         <div class="mb-3">
@@ -20,8 +20,6 @@
         <div class="col-12">
         <button class="btn btn-primary" type="submit">Valider</button>
         </div>
-{#        <input type="submit" value="Modifier" name="Modifier" >#}
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
     </fieldset>
   </form>
