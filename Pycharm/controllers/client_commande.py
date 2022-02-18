@@ -9,7 +9,7 @@ client_commande = Blueprint('client_commande', __name__,
                         template_folder='templates')
 
 
-@client_commande.route('/client/commande/add', methods=['POST'])
+@client_commande.route('/client/commande/add', methods=['POST']) # Fini
 def client_commande_add():
     #Variables
     idUser = session['user_id']
@@ -30,6 +30,7 @@ def client_commande_add():
     idPanier = mycursor.fetchone()
     print('idpanier after fetchone : ', idPanier)
     idPanier = idPanier['idPanier']
+    print('idpanier : ', idPanier)
 
 #   idCommande = NULL
     datecommande = datetime.now()
@@ -38,10 +39,10 @@ def client_commande_add():
     sql = "SELECT idAdresse FROM Adresse WHERE idUser = %s"
     test = mycursor.execute(sql, idUser)
     if (test == 0):
-        print('Panier inexistant création panier')
+        print('Pas d\'adresse, création d\'une adresse par default')
         tuple_adresse = ('default street', 00000, 'default city', idUser)
         sql = "INSERT INTO Adresse VALUES (NULL , %s, %s, %s, %s)"
-        mycursor.execute(sql, idUser)
+        mycursor.execute(sql, tuple_adresse)
         get_db().commit()
         sql = "SELECT idAdresse FROM Adresse WHERE idUser = %s"
         mycursor.execute(sql, idUser)
@@ -58,18 +59,30 @@ def client_commande_add():
     mycursor.execute(sql, tuple_commande)
     get_db().commit()
 
+    sql = '''SELECT last_insert_id() AS last_insert_id;'''
+    mycursor.execute(sql)
+    info_last_id = mycursor.fetchone()
+    idCommande = info_last_id['last_insert_id']
+    print('idCommande : ', idCommande)
+
 # ==================================== Remplis la commande
 
     # recupper les données
 
-    sql = "SELECT idAdresse FROM Adresse WHERE idPanier = %s"
+    sql = "SELECT idProduit, quantite FROM contient WHERE idPanier = %s"
     mycursor.execute(sql, idPanier)
     lignes = mycursor.fetchall()
     print('lignes panier : ', lignes)
-
     # insere les données
-
-    test = 1
+    print()
+    print('insere les données')
+    for ligne in lignes:
+        print('ligne : ', ligne)
+        tuple_ligne = (ligne["idProduit"], idCommande, ligne["quantite"])
+        print('tuple_ligne : ', tuple_ligne)
+        sql = "INSERT INTO concerne VALUES (%s, %s, %s)"
+        mycursor.execute(sql, tuple_ligne)
+        get_db().commit()
 
 # ==================================== Vide le panier
 
@@ -86,7 +99,42 @@ def client_commande_add():
 @client_commande.route('/client/commande/show', methods=['get','post'])
 def client_commande_show():
     mycursor = get_db().cursor()
-    commandes = None
-    articles_commande = None
+
+    # recupperation de l'id de la commande a traiter
+    idCommande = request.form.get('idCommande', 0)
+    print('idCommande : ', idCommande)
+
+    # Recuperation des commandes
+
+    sql = '''SELECT Commande.idCommande AS id
+                   , Commande.dateCommande AS date_achat
+                   , SUM(concerne.quantite) As nbr_articles
+                   , SUM(concerne.quantite * Produit.Prix)  As prix_total
+                   , Commande.idEtat AS etat_id
+                   , Etat.libelleEtat AS libelle
+             From Commande
+             INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
+             INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
+             INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
+             WHERE Commande.idUser = %s
+             GROUP BY Commande.idCommande
+    '''
+    mycursor.execute(sql, session['user_id'])
+    commandes = mycursor.fetchall()
+
+    # Affichage de la commande a traiter
+
+    sql = '''SELECT Produit.LibelleProduit AS nom
+                       , concerne.quantite AS quantite
+                       , Produit.Prix As prix
+                       , concerne.quantite * Produit.Prix As prix_ligne
+                 From Commande
+                 INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
+                 INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
+                 INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
+                 WHERE Commande.idCommande = %s
+        '''
+    mycursor.execute(sql, idCommande)
+    articles_commande = mycursor.fetchall()
     return render_template('client/commandes/show.html', commandes=commandes, articles_commande=articles_commande)
 
