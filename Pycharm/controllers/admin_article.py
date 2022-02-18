@@ -129,7 +129,7 @@ def show_article():
     mycursor.execute(sql)
     filter_Fournisseur = mycursor.fetchall()
 
-    return render_template('client/boutique/panier_article.html'
+    return render_template('admin/article/show_article.html'
                            , article=article
                            , articlesPanier=articles_panier
                            , prix_total=prix_total
