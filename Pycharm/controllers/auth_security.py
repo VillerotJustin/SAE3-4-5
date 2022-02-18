@@ -34,7 +34,7 @@ def auth_login_post():
             session['username'] = user['username']
             session['role'] = user['libelleRole']
             session['user_id'] = user['idUser']
-            print(user['username'], user['idRole'])
+            print(user['username'],' id : ', user['idRole'])
             if user['idRole'] == 1:
                 return redirect('/admin/commande/index')
             else:

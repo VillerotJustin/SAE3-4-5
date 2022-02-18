@@ -111,30 +111,35 @@ def client_article_show():                                 # remplace client_ind
     print()
     print('Panier affichage')
     print('id user : ', session['user_id'])
-    articles_panier = []
+    monPanier = []
+    prix_total = []
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
-    idPanier = mycursor.execute(sql, session['user_id'])
-    print('id panier : ', idPanier)
-    sql = '''SELECT contient.*
-                    , Produit.LibelleProduit
-                    , Produit.Prix
-                    , Variation.Stock
-        FROM contient
-        INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
-        INNER JOIN Variations Variation on Produit.idProduit = Variation.idProduit
-        WHERE contient.idPanier = %s'''
-    mycursor.execute(sql, idPanier)
-    monPanier = mycursor.fetchall()
+    mycursor.execute(sql, session['user_id'])
+    idPanier = mycursor.fetchone()
+    print('idpanier after fetchone : ', idPanier)
+    if (idPanier is not None):
+        idPanier = idPanier['idPanier']
+        print('id panier : ', idPanier)
+        sql = '''SELECT contient.*
+                            , Produit.LibelleProduit
+                            , Produit.Prix
+                            , Variation.Stock
+                FROM contient
+                INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
+                INNER JOIN Variations Variation on Produit.idProduit = Variation.idProduit
+                WHERE contient.idPanier = %s'''
+        mycursor.execute(sql, idPanier)
+        monPanier = mycursor.fetchall()
 
-    # Prix total
-    sql = '''SELECT SUM(contient.quantite * Produit.Prix) AS Prix_Total
-            FROM contient
-            INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
-            WHERE contient.idPanier = %s'''
-    mycursor.execute(sql, idPanier)
-    prix_total = mycursor.fetchone()
-    print('Prix_Total : ', prix_total["Prix_Total"])
-    prix_total = prix_total["Prix_Total"]
+        # Prix total
+        sql = '''SELECT SUM(contient.quantite * Produit.Prix) AS Prix_Total
+                    FROM contient
+                    INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
+                    WHERE contient.idPanier = %s'''
+        mycursor.execute(sql, idPanier)
+        prix_total = mycursor.fetchone()
+        print('Prix_Total : ', prix_total["Prix_Total"])
+        prix_total = prix_total["Prix_Total"]
 
     # For filter
 
@@ -156,7 +161,6 @@ def client_article_show():                                 # remplace client_ind
 
     return render_template('client/boutique/panier_article.html'
                            , article=article
-                           , articlesPanier=articles_panier
                            , prix_total=prix_total
                            , filter_type_article=filter_type_article
                            , filter_Grade=filter_Grade

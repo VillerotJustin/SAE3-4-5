@@ -18,13 +18,16 @@ def client_panier_add():
     # Id Panier
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
     idPanier = mycursor.execute(sql, session['user_id'])
-    if (idPanier is None):
+    if (idPanier is None or idPanier == () or idPanier == 0):
         print('Panier inexistant création panier')
         sql = "INSERT INTO PanierUser VALUES (NULL , %s)"
         mycursor.execute(sql, session['user_id'])
         get_db().commit()
         sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
-        idPanier = mycursor.execute(sql, session['user_id'])
+        mycursor.execute(sql, session['user_id'])
+    idPanier = mycursor.fetchone()
+    print('idpanier after fetchone : ', idPanier)
+    idPanier = idPanier['idPanier']
 
     # Ajout dans le panier
     print('id Produit : ', idProduit)
@@ -58,13 +61,16 @@ def client_panier_delete():
     # Id Panier
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
     idPanier = mycursor.execute(sql, session['user_id'])
-    if (idPanier is None):
+    if (idPanier is None or idPanier == () or idPanier == 0):
         print('Panier inexistant création panier')
         sql = "INSERT INTO PanierUser VALUES (NULL , %s)"
         mycursor.execute(sql, session['user_id'])
         get_db().commit()
         sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
-        idPanier = mycursor.execute(sql, session['user_id'])
+        mycursor.execute(sql, session['user_id'])
+    idPanier = mycursor.fetchone()
+    print('idpanier after fetchone : ', idPanier)
+    idPanier = idPanier['idPanier']
 
     # Diminue la quantite
     print('Diminution de la quantite')
@@ -97,13 +103,16 @@ def client_panier_vider():
     # Id Panier
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
     idPanier = mycursor.execute(sql, session['user_id'])
-    if (idPanier is None):
+    if (idPanier is None or idPanier == () or idPanier == 0):
         print('Panier inexistant création panier')
         sql = "INSERT INTO PanierUser VALUES (NULL , %s)"
         mycursor.execute(sql, session['user_id'])
         get_db().commit()
         sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
-        idPanier = mycursor.execute(sql, session['user_id'])
+        mycursor.execute(sql, session['user_id'])
+    idPanier = mycursor.fetchone()
+    print('idpanier after fetchone : ', idPanier)
+    idPanier = idPanier['idPanier']
 
     # Vide le panier
     sql = "DELETE FROM contient Where idPanier = %s"
@@ -122,13 +131,16 @@ def client_panier_delete_line():
     # Id Panier
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
     idPanier = mycursor.execute(sql, session['user_id'])
-    if (idPanier is None):
+    if (idPanier is None or idPanier == () or idPanier == 0):
         print('Panier inexistant création panier')
         sql = "INSERT INTO PanierUser VALUES (NULL , %s)"
         mycursor.execute(sql, session['user_id'])
         get_db().commit()
         sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
-        idPanier = mycursor.execute(sql, session['user_id'])
+        mycursor.execute(sql, session['user_id'])
+    idPanier = mycursor.fetchone()
+    print('idpanier after fetchall : ', idPanier)
+    idPanier = idPanier['idPanier']
 
     # Supprime la ligne
     tuple_delete = (idPanier, idProduit)
