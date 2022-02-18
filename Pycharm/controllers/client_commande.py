@@ -100,7 +100,40 @@ def client_commande_add():
 @client_commande.route('/client/commande/show', methods=['get','post'])
 def client_commande_show():
     mycursor = get_db().cursor()
-    commandes = None
-    articles_commande = None
+
+    # recupperation de l'id de la commande a traiter
+    idCommande = request.form.get('idCommande', None)
+    print('idCommande : ', idCommande)
+
+    # Recuperation des commandes
+
+    sql = '''SELECT Commande.idCommande AS id
+                   , Commande.dateCommande AS date_achat
+                   , SUM(concerne.quantite) As nbr_articles
+                   , SUM(concerne.quantite * Produit.Prix)  As prix_total
+                   , Commande.idEtat AS etat_id
+                   , Etat.libelleEtat AS libelle
+             From Commande
+             INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
+             INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
+             INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
+    '''
+    mycursor.execute(sql)
+    commandes = mycursor.fetchall()
+
+    # Affichage de la commande a traiter
+
+    sql = '''SELECT Produit.LibelleProduit AS nom
+                       , concerne.quantite AS quantite
+                       , Produit.Prix As prix
+                       , concerne.quantite * Produit.Prix As prix_ligne
+                 From Commande
+                 INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
+                 INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
+                 INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
+                 WHERE Commande.idCommande = %s
+        '''
+    mycursor.execute(sql, idCommande)
+    articles_commande = mycursor.fetchall()
     return render_template('client/commandes/show.html', commandes=commandes, articles_commande=articles_commande)
 
