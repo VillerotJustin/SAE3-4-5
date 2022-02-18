@@ -9,7 +9,7 @@ client_commande = Blueprint('client_commande', __name__,
                         template_folder='templates')
 
 
-@client_commande.route('/client/commande/add', methods=['POST'])
+@client_commande.route('/client/commande/add', methods=['POST']) # Fini
 def client_commande_add():
     #Variables
     idUser = session['user_id']
@@ -30,6 +30,7 @@ def client_commande_add():
     idPanier = mycursor.fetchone()
     print('idpanier after fetchone : ', idPanier)
     idPanier = idPanier['idPanier']
+    print('idpanier : ', idPanier)
 
 #   idCommande = NULL
     datecommande = datetime.now()
@@ -38,10 +39,10 @@ def client_commande_add():
     sql = "SELECT idAdresse FROM Adresse WHERE idUser = %s"
     test = mycursor.execute(sql, idUser)
     if (test == 0):
-        print('Panier inexistant création panier')
+        print('Pas d\'adresse, création d\'une adresse par default')
         tuple_adresse = ('default street', 00000, 'default city', idUser)
         sql = "INSERT INTO Adresse VALUES (NULL , %s, %s, %s, %s)"
-        mycursor.execute(sql, idUser)
+        mycursor.execute(sql, tuple_adresse)
         get_db().commit()
         sql = "SELECT idAdresse FROM Adresse WHERE idUser = %s"
         mycursor.execute(sql, idUser)
@@ -58,18 +59,31 @@ def client_commande_add():
     mycursor.execute(sql, tuple_commande)
     get_db().commit()
 
+    sql = '''SELECT last_insert_id() AS last_insert_id;'''
+    mycursor.execute(sql)
+    info_last_id = mycursor.fetchone()
+    idCommande = info_last_id['last_insert_id']
+    print('idCommande : ', idCommande)
+
 # ==================================== Remplis la commande
 
     # recupper les données
 
-    sql = "SELECT idAdresse FROM Adresse WHERE idPanier = %s"
+    sql = "SELECT idProduit, quantite FROM contient WHERE idPanier = %s"
     mycursor.execute(sql, idPanier)
     lignes = mycursor.fetchall()
     print('lignes panier : ', lignes)
-
+    print('lignes panier 1 : ', lignes[1])
     # insere les données
-
-    test = 1
+    print()
+    print('insere les données')
+    for ligne in lignes:
+        print('ligne : ', ligne)
+        tuple_ligne = (ligne["idProduit"], idCommande, ligne["quantite"])
+        print('tuple_ligne : ', tuple_ligne)
+        sql = "INSERT INTO concerne VALUES (%s, %s, %s)"
+        mycursor.execute(sql, tuple_ligne)
+        get_db().commit()
 
 # ==================================== Vide le panier
 
