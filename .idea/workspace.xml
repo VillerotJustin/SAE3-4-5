@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f86f7413-97b4-4db3-9597-c90efd18619b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/f51da5e1-b930-4c2b-b915-7d79a8a1e93f.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f51da5e1-b930-4c2b-b915-7d79a8a1e93f.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/controllers/admin_article.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/controllers/admin_article.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/delete_type_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/delete_type_article.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/edit_type_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/edit_type_article.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/show_type_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/type_article/show_type_article.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pycharm/controllers/admin_commande.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/controllers/admin_commande.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pycharm/templates/admin/commandes/show.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/templates/admin/commandes/show.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +42,29 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Pycharm/app_etu.py" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Flask server.Flask (Pycharm/app_etu.py)">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Flask (Pycharm/app_etu.py)" type="Python.FlaskServer" nameIsGenerated="true">
       <module name="SAE3-4-5" />
       <option name="target" value="$PROJECT_DIR$/Pycharm/app_etu.py" />
@@ -72,7 +92,10 @@
       <workItem from="1644478793931" duration="4155000" />
       <workItem from="1644579237866" duration="3299000" />
       <workItem from="1644586225459" duration="6845000" />
-      <workItem from="1645215198382" duration="1248000" />
+      <workItem from="1645215198382" duration="1605000" />
+      <workItem from="1645267112208" duration="1635000" />
+      <workItem from="1645268757290" duration="8000" />
+      <workItem from="1645268928584" duration="3678000" />
     </task>
     <servers />
   </component>
@@ -80,6 +103,6 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/SAE3_4_5$Flask__Pycharm_app_etu_py_.coverage" NAME="Flask (Pycharm/app_etu.py) Coverage Results" MODIFIED="1645216442461" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SAE3_4_5$Flask__Pycharm_app_etu_py_.coverage" NAME="Flask (Pycharm/app_etu.py) Coverage Results" MODIFIED="1645272605641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
