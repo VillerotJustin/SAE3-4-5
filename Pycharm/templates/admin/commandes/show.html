@@ -1,12 +1,32 @@
 {% extends "admin/layout_admin.html" %}
 {% block body %}
     <div class="container-fluid">
+        {% if articles_commande %}
+            <h3>Recapitulatifs de la commande selectionnée</h3>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr><th>Nom</th><th>Quantite</th><th>Prix</th><th>Prix total</th></tr>
+                </thead>
+                <tbody>
+                        {% for ligne in articles_commande %}
+                            <tr>
+                                <td>{{ ligne.nom }}</td>
+                                <td>{{ ligne.quantite }}</td>
+                                <td>{{ ligne.prix }} €</td>
+                                <td>{{ ligne.prix_ligne }} €  </td>
+                            </tr>
+                        {% endfor %}
+
+                </tbody>
+            </table>
+            <hr>
+        {% endif %}
         <div class="card shadow">
             <div class="card-header py-3">
                 <p class="text-primary m-0 font-weight-bold">Toutes les commandes</p>
             </div>
             <div class="card-body">
-                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
                     <table class="table my-0" id="dataTable" style="text-align: center">
                         <thead>
                         <tr>
@@ -23,7 +43,7 @@
                         {% for commande in commandes %}
                             <tr id="" style="background: #FFD600; font-weight: bold;">
                                 <td>{{ commande.id }}</td>
-                                <td>-----</td>
+                                <td>{{commande.username}}</td>
                                 <td>{{ commande.date_achat.strftime('%d-%m-%Y') }}</td>
                                 <td> {{ commande.nbr_articles }} </td>
                                 <td>
@@ -39,8 +59,8 @@
                                     {% endif %}
                                 </td>
                                 <td style="text-align: center;">
-                                    <input type="hidden" name="id" size="18" value="{{ commande.id }}" id="id">
-                                    <form action="/admin/commande/valider" style="display: inline-block;"  method="post">
+                                    <form action="/admin/commande/show" style="display: inline-block;"  method="post">
+                                        <input type="hidden" name="idCommande" size="18" value="{{ commande.id }}" id="id">
                                         <button class="btn btn-primary" > Details </button>
                                         {% if commande.etat_id == 2 %}
                                             <div style="color: green" >Commande validée !</div>

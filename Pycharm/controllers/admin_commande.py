@@ -13,12 +13,18 @@ def admin_index():
     return render_template('admin/layout_admin.html')
 
 
-@admin_commande.route('/admin/commande/show')
+@admin_commande.route('/admin/commande/show', methods=['GET', 'POST'])
 def admin_commande_show():
         mycursor = get_db().cursor()
+
+        # recupperation de l'id de la commande a traiter
+        idCommande = request.form.get('idCommande', 0)
+        print('idCommande : ', idCommande)
+
         # Recuperation des commandes
 
         sql = '''SELECT Commande.idCommande AS id
+                       , Utilisateur.username AS username
                        , Commande.dateCommande AS date_achat
                        , SUM(concerne.quantite) As nbr_articles
                        , SUM(concerne.quantite * Produit.Prix)  As prix_total
@@ -28,11 +34,13 @@ def admin_commande_show():
                  INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
                  INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
                  INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
+                 INNER JOIN Utilisateur on Commande.idUser = Utilisateur.idUser
                  WHERE Commande.idUser = 2
                  GROUP BY Commande.idCommande
         '''
         mycursor.execute(sql)
         commandes = mycursor.fetchall()
+        print(commandes)
 
         # Affichage de la commande a traiter
 
@@ -44,9 +52,11 @@ def admin_commande_show():
                      INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
                      INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
                      INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
+                     WHERE Commande.idCommande = %s
             '''
-        mycursor.execute(sql)
+        mycursor.execute(sql, idCommande)
         articles_commande = mycursor.fetchall()
+        print(articles_commande)
         return render_template('admin/commandes/show.html', commandes=commandes, articles_commande=articles_commande)
 
 
