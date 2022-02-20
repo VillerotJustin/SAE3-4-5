@@ -29,10 +29,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="Description">Description</label>
+                            <label for="description">description</label>
                         </td>
                         <td>
-                            <textarea class="form-control" name="Description" placeholder="Entrer la description du produit" required id="Description"></textarea>
+                            <textarea class="form-control" name="description" placeholder="Entrer la description du produit" required id="description"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -44,12 +44,39 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>
+                            <label for="stock">Stock</label>
+                        </td>
+                        <td>
+                            <input class="form-control" type="number" name="stock" placeholder="Stock" required id="stock">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="Image">Image</label>
+                        </td>
+                        <td>
+                            <input class="form-control" type="file" name="Image" placeholder="Image" required id="Image">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="fournisseur">Fournisseur</label></td>fournisseur
+                        <td>
+                            <select class="form-control" name="fournisseur" required id="fournisseur">
+                                <option value="">Sélectionner un fournisseur</option>
+                                {% for type in fournisseur %}
+                                    <option value="{{ type.idFourniseur }}"> {{ type.libelleFourniseur }} </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><label for="TypeProduit">TypeProduit</label></td>
                         <td>
                             <select class="form-control" name="TypeProduit" required id="TypeProduit">
                                 <option value="">Sélectionner le type de produit</option>
                                 {% for type in TypeProduit %}
-                                    <option value="{{ type.id }}"> {{ type.LibelleType }} </option>
+                                    <option value="{{ type.idType }}"> {{ type.LibelleType }} </option>
                                 {% endfor %}
                             </select>
                         </td>
@@ -57,10 +84,10 @@
                     <tr>
                         <td><label for="Taille">Taille</label></td>
                         <td>
-                            <select class="form-control" name="Taille" required id="Taille">
+                            <select class="form-control" name="Taille" id="Taille">
                                 <option value="">Sélectionner une taille si existant sur le produit</option>
                                 {% for type in Taille %}
-                                    <option value="{{ type.id }}"> {{ type.LibelleTaille }} </option>
+                                    <option value="{{ type.idTaille }}"> {{ type.LibelleTaille }} </option>
                                 {% endfor %}
                             </select>
                         </td>
@@ -68,10 +95,10 @@
                     <tr>
                         <td><label for="Grade">Grade</label></td>
                         <td>
-                            <select class="form-control" name="Grade" required id="Grade">
+                            <select class="form-control" name="Grade" id="Grade">
                                 <option value="">Sélectionner un grade d'impression si existant sur le produit</option>
                                 {% for type in Grade %}
-                                    <option value="{{ type.id }}"> {{ type.Libelle }} / {{ type.abreviation }} </option>
+                                    <option value="{{ type.idGrade }}"> {{ type.Libelle }} / {{ type.abreviation }} </option>
                                 {% endfor %}
                             </select>
                         </td>

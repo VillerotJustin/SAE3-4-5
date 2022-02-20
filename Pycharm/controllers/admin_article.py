@@ -147,11 +147,12 @@ def add_type_article():
 
 @admin_article.route('/admin/type_article_add', methods=['POST'])
 def valid_add_type_article():
+    mycursor = get_db().cursor()
     libelle = request.form.get('libelle', '')
     sql = '''INSERT INTO TypeProduit VALUES
                 (NULL, %s);'''
     mycursor.execute(sql, libelle)
-    my
+    get_db().commit()
     return render_template('admin/type_article/show_type_article.html')
 
 
@@ -226,20 +227,46 @@ def add_article():
 @admin_article.route('/admin/article/add', methods=['POST'])
 def valid_add_article():
     mycursor = get_db().cursor()
+
+    # Recuperation donnee
+
     nom = request.form.get('nom', '')
-    type_article_id = request.form.get('type_article_id', '')
-    # type_article_id = int(type_article_id)
-    prix = request.form.get('prix', '')
-    stock = request.form.get('stock', '')
     description = request.form.get('description', '')
-    image = request.form.get('image', '')
-    sql = '''INSERT INTO Produit VALUES
-                (NULL, %s, %s, %s, NULL, NULL, NULL, NULL);'''
-    mycursor.execute(sql,(nom, prix, description,))
+    prix = float(request.form.get('Prix', ''))
+    idFourniseur = request.form.get('fournisseur', None)
+    idType = request.form.get('TypeProduit', None)
+    idTaille = request.form.get('Taille', None)
+    idGrade = request.form.get('Grade', None)
+    tuple_add = (nom, prix, description, idFourniseur, idType, idTaille, idGrade)
+    print('tuple_add : ', tuple_add)
+
+    # Création du produit
+    sql = '''INSERT INTO Produit VALUES (NULL, %s, %s, %s, %s, %s, %s, %s);'''
+    mycursor.execute(sql, tuple_add)
     get_db().commit()
 
-    print(u'article ajouté , nom: ', nom, ' - type_article:', type_article_id, ' - prix:', prix, ' - stock:', stock, ' - description:', description, ' - image:', image)
-    message = u'article ajouté , nom:'+nom + '- type_article:' + type_article_id + ' - prix:' + prix + ' - stock:'+  stock + ' - description:' + description + ' - image:' + image
+    # Recupperation de l'id du produit
+    sql = '''SELECT last_insert_id() AS last_insert_id;'''
+    mycursor.execute(sql)
+    info_last_id = mycursor.fetchone()
+    idProduit = info_last_id['last_insert_id']
+    print('idProduit : ', idProduit)
+
+    # donnee variation
+
+    libelleVariation = ""
+    image = request.form.get('Image', '')
+    stock = request.form.get('stock', '')
+    tuple_variation = (libelleVariation, image, stock, idProduit)
+    print('tuple_variation : ', tuple_variation)
+
+    # Création de la variation par default
+    sql = '''INSERT INTO Variations VALUES (NULL, %s, %s, %s, %s);'''
+    mycursor.execute(sql, tuple_variation)
+    get_db().commit()
+
+    print(u'article ajouté , nom: ', nom, ' - typeArticle:', idType, ' - prix:', prix, ' - stock:', stock, ' - description:', description, ' - image:', image)
+    message = u'article ajouté , nom:'+nom + '- typeArticle:' + idType + ' - prix:' + str(prix) + ' - stock:'+  stock + ' - description:' + description + ' - image:' + image
     flash(message)
     return redirect(url_for('admin_article.show_article'))
 
