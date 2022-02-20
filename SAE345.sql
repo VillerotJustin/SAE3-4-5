@@ -517,11 +517,13 @@ DROP TABLE IF EXISTS `concerne`;
 CREATE TABLE `concerne` (
   `idProduit` int(11) NOT NULL,
   `idCommande` int(11) NOT NULL,
+  `idVariation` int(11) NOT NULL,
   `quantite` int(11) DEFAULT NULL,
   PRIMARY KEY (`idProduit`,`idCommande`),
   KEY `idCommande` (`idCommande`),
   CONSTRAINT `concerne_ibfk_1` FOREIGN KEY (`idProduit`) REFERENCES `Produit` (`idProduit`),
-  CONSTRAINT `concerne_ibfk_2` FOREIGN KEY (`idCommande`) REFERENCES `Commande` (`idCommande`)
+  CONSTRAINT `concerne_ibfk_2` FOREIGN KEY (`idCommande`) REFERENCES `Commande` (`idCommande`),
+  CONSTRAINT `concerne_ibfk_2` FOREIGN KEY (`idVariation`) REFERENCES `Variations` (`idVariation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -544,11 +546,13 @@ DROP TABLE IF EXISTS `contient`;
 CREATE TABLE `contient` (
   `idProduit` int(11) NOT NULL,
   `idPanier` int(11) NOT NULL,
+  `idVariation` int(11) NOT NULL,
   `quantite` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idProduit`,`idPanier`),
+  PRIMARY KEY (`idProduit`,`idPanier`, `idVariation`),
   KEY `fk_contient_PanierUser` (`idPanier`),
   CONSTRAINT `fk_contient_PanierUser` FOREIGN KEY (`idPanier`) REFERENCES `PanierUser` (`idPanier`),
-  CONSTRAINT `fk_contient_Produit` FOREIGN KEY (`idProduit`) REFERENCES `Produit` (`idProduit`)
+  CONSTRAINT `fk_contient_Produit` FOREIGN KEY (`idProduit`) REFERENCES `Produit` (`idProduit`),
+  CONSTRAINT `fk_contient_Variations` FOREIGN KEY (`idVariation`) REFERENCES `Variations` (`idVariation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

@@ -150,19 +150,23 @@ CREATE TABLE estComposéDe(
 CREATE TABLE contient(
    idProduit INT,
    idPanier INT,
+   idVariation INT,
    quantite INT,
    PRIMARY KEY(idProduit, idPanier),
    CONSTRAINT fk_contient_Produit FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
-   CONSTRAINT fk_contient_PanierUser FOREIGN KEY(idPanier) REFERENCES PanierUser(idPanier)
+   CONSTRAINT fk_contient_PanierUser FOREIGN KEY(idPanier) REFERENCES PanierUser(idPanier),
+   CONSTRAINT fk_contient_Variations FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
 );
 
 CREATE TABLE concerne(
    idProduit INT,
    idCommande INT,
+   idVariation INT,
    quantite INT,
    PRIMARY KEY(idProduit, idCommande),
    FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
-   FOREIGN KEY(idCommande) REFERENCES Commande(idCommande)
+   FOREIGN KEY(idCommande) REFERENCES Commande(idCommande),
+   FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
 );
 
 
