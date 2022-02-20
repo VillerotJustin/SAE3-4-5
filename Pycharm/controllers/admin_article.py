@@ -161,7 +161,8 @@ def edit_type_article(id):
     mycursor = get_db().cursor()
     sql = '''SELECT * FROM TypeProduit WHERE idType=%s'''
     mycursor.execute(sql, id)
-    type_article = mycursor.fetchall()
+    type_article = mycursor.fetchone()
+    print(type_article)
     return render_template('admin/type_article/edit_type_article.html', type_article=type_article)
 
 
@@ -169,7 +170,7 @@ def edit_type_article(id):
 def valid_edit_type_article():
     mycursor = get_db().cursor()
     id = request.form.get('id', '')
-    libelle = request.form.get('libelle','')
+    libelle = request.form.get('libelle', '')
     sql = '''UPDATE TypeProduit SET LibelleType=%s WHERE idType=%s'''
     mycursor.execute(sql, (str(libelle), id))
     get_db().commit()
@@ -186,22 +187,23 @@ def delete_type_article(id):
     articles = mycursor.fetchall()
     sql = '''SELECT COUNT(idProduit) AS nbr_articles FROM Produit WHERE idType=%s'''
     mycursor.execute(sql, id)
-    nbr_articles = mycursor.fetchall()
-    print(nbr_articles)
-    return render_template('admin/type_article/delete_type_article.html', articles=articles, nbr_articles=nbr_articles)
+    nbr_articles = mycursor.fetchone()
+    sql = '''SELECT * FROM TypeProduit WHERE idType=%s'''
+    mycursor.execute(sql, id)
+    type_article = mycursor.fetchone()
+    return render_template('admin/type_article/delete_type_article.html', articles=articles, nbr_articles=nbr_articles, type_article=type_article)
 
 
-@admin_article.route('/admin/type_article/delete/')
+@admin_article.route('/admin/type_article/delete/', methods=['GET'])
 def valid_delete_type_article():
     mycursor = get_db().cursor()
     # bar = request.args.to_dict()
     # print(bar)
-    id_type = request.args.get('id','')
     id_produit = request.args.get('id_article', '')
-    sql = '''DELETE FROM Produit WHERE idType = %s AND idProduit=%s'''
-    mycursor.execute(sql, (id_type, id_produit))
+    sql = '''DELETE FROM Variations WHERE idProduit=%s'''
+    mycursor.execute(sql, id_produit)
     print("un type d'article supprimé, id :", id)
-    flash(u"un type d'article supprimé, id : " + id)
+    flash(u"un type d'article supprimé, id : " + str(id))
     return redirect(url_for('admin_article.show_type_article'))
 
 
