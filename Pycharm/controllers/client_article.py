@@ -120,16 +120,21 @@ def client_article_show():                                 # remplace client_ind
     if (idPanier is not None):
         idPanier = idPanier['idPanier']
         print('id panier : ', idPanier)
-        sql = '''SELECT contient.*
+        sql = '''SELECT contient.idVariation
+                            , contient.idProduit
+                            , contient.quantite
                             , Produit.LibelleProduit
                             , Produit.Prix
                             , Variation.Stock
+                            , Variation.libelle
                 FROM contient
+                INNER JOIN Variations Variation on contient.idVariation = Variation.idVariation
                 INNER JOIN Produit Produit on contient.idProduit = Produit.idProduit
-                INNER JOIN Variations Variation on Produit.idProduit = Variation.idProduit
-                WHERE contient.idPanier = %s'''
+                WHERE contient.idPanier = %s
+                '''
         mycursor.execute(sql, idPanier)
         monPanier = mycursor.fetchall()
+        print('monPanier : ', monPanier)
 
         # Prix total
         sql = '''SELECT SUM(contient.quantite * Produit.Prix) AS Prix_Total

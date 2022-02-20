@@ -13,6 +13,7 @@ client_panier = Blueprint('client_panier', __name__,
 def client_panier_add():
     mycursor = get_db().cursor()
     idProduit = request.form.get('idProduit', None)
+    idVariation = request.form.get('idVariation', None)
     quantite = request.form.get('quantite', None)
     print('ajout panier')
     # Id Panier
@@ -32,22 +33,22 @@ def client_panier_add():
     # Ajout dans le panier
     print('id Produit : ', idProduit)
     print('id panier : ', idPanier)
-    tuple_Panier = (idProduit, idPanier)
+    tuple_Panier = (idProduit, idPanier, idVariation)
     print('tuple : ', tuple_Panier)
-    sql = "SELECT * FROM contient WHERE idProduit = %s AND idPanier = %s;"
+    sql = "SELECT * FROM contient WHERE idProduit = %s AND idPanier = %s AND idVariation = %s;"
     mycursor.execute(sql, tuple_Panier)
     test = mycursor.fetchall()
     print('test : ', test)
     if (test is None or test == ()):
-        tuple_Panier = (idProduit, idPanier, quantite)
+        tuple_Panier = (idProduit, idPanier, idVariation, quantite)
         print('produit pas dans le panier')
-        sql = "INSERT INTO contient VALUES (%s, %s, %s)"
+        sql = "INSERT INTO contient VALUES (%s, %s, %s, %s)"
         mycursor.execute(sql, tuple_Panier)
         get_db().commit()
     else:
         print('produit dans le panier')
-        tuple_Panier = (quantite, idProduit, idPanier)
-        sql = "UPDATE contient set quantite=(quantite+ %s) WHERE idProduit = %s AND idPanier = %s;"
+        tuple_Panier = (quantite, idProduit, idPanier, idVariation)
+        sql = "UPDATE contient set quantite=(quantite+ %s) WHERE idProduit = %s AND idPanier = %s AND idVariation = %s;"
         mycursor.execute(sql, tuple_Panier)
         get_db().commit()
     return redirect('/client/article/show')
@@ -58,6 +59,8 @@ def client_panier_add():
 def client_panier_delete():
     mycursor = get_db().cursor()
     idProduit = request.form.get('idProduit', None)
+    idVariation = request.form.get('idVariation', None)
+
     # Id Panier
     sql = "SELECT idPanier FROM PanierUser WHERE idUser = %s"
     idPanier = mycursor.execute(sql, session['user_id'])
@@ -74,9 +77,9 @@ def client_panier_delete():
 
     # Diminue la quantite
     print('Diminution de la quantite')
-    tuple_Panier = (idProduit, idPanier)
+    tuple_Panier = (idProduit, idPanier, idVariation)
     # test quantite
-    sql = "SELECT contient.quantite FROM contient WHERE idProduit = %s AND idPanier = %s;"
+    sql = "SELECT contient.quantite FROM contient WHERE idProduit = %s AND idPanier = %s AND idVariation = %s;"
     mycursor.execute(sql, tuple_Panier)
     test_quantite = mycursor.fetchone()
     test_quantite = test_quantite["quantite"]
@@ -84,11 +87,11 @@ def client_panier_delete():
 
 
     if (test_quantite == 1):
-        sql = "DELETE FROM contient WHERE idProduit = %s AND idPanier = %s;"
+        sql = "DELETE FROM contient WHERE idProduit = %s AND idPanier = %s AND idVariation = %s;"
         mycursor.execute(sql, tuple_Panier)
         get_db().commit()
     else:
-        sql = "UPDATE contient set quantite=(quantite-1) WHERE idProduit = %s AND idPanier = %s;"
+        sql = "UPDATE contient set quantite=(quantite-1) WHERE idProduit = %s AND idPanier = %s AND idVariation = %s;"
         mycursor.execute(sql, tuple_Panier)
         get_db().commit()
 
@@ -126,6 +129,7 @@ def client_panier_vider():
 @client_panier.route('/client/panier/delete/line', methods=['POST'])
 def client_panier_delete_line():
     idProduit = request.form.get('idProduit', None)
+    idVariation = request.form.get('idVariation', None)
     mycursor = get_db().cursor()
 
     # Id Panier
@@ -143,12 +147,12 @@ def client_panier_delete_line():
     idPanier = idPanier['idPanier']
 
     # Supprime la ligne
-    tuple_delete = (idPanier, idProduit)
+    tuple_delete = (idPanier, idProduit, idVariation)
     print('Delete line')
     print('id Produit : ', idProduit)
     print('id panier : ', idPanier)
     print('tuple_delete : ', tuple_delete)
-    sql = "DELETE FROM contient Where idPanier = %s AND idProduit = %s"
+    sql = "DELETE FROM contient Where idPanier = %s AND idProduit = %s AND idVariation = %s"
     mycursor.execute(sql, tuple_delete)
     get_db().commit()
 
