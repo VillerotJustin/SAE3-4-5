@@ -51,9 +51,13 @@
                                 </td>
                                 <td style="text-align: center;">
                                     {% if commande.etat_id == 1 %}
-                                    <div style="background-color: #ba8b00; padding: 5px;">
-                                     {{ commande.libelle }}
-                                    </div>
+                                        <div style="background-color: #d20000; padding: 5px;">
+                                            {{ commande.libelle }}
+                                        </div>
+                                    {% elif commande.etat_id == 2%}
+                                        <div style="background-color: #ba8b00; padding: 5px;">
+                                            {{ commande.libelle }}
+                                        </div>
                                     {% else %} <div style="background-color: #34ce57; padding: 5px;">
                                         {{ commande.libelle }} </div>
                                     {% endif %}
@@ -62,8 +66,10 @@
                                     <form action="/admin/commande/show" style="display: inline-block;"  method="post">
                                         <input type="hidden" name="idCommande" size="18" value="{{ commande.id }}" id="id">
                                         <button class="btn btn-primary" > Details </button>
-                                        {% if commande.etat_id == 2 %}
+                                        {% if commande.etat_id == 3 %}
                                             <div style="color: green" >Commande validée !</div>
+                                        {% elif commande.etat_id == 2 %}
+                                            <a href="/admin/commande/valider?id={{commande.id}}" class="btn btn-success" style="color: white" type="submit">Envoyer la commande</a>
                                         {% else %}
                                             <a href="/admin/commande/valider?id={{commande.id}}" class="btn btn-success" style="color: white" type="submit">Valider la commande</a>
                                         {% endif %}

@@ -46,9 +46,14 @@
                                     {{ "{:,.2f} €".format(commande.prix_total) }}
                                 </td>
                                 <td style="text-align: center;">
-                                    {% if commande.etat_id == 1 %} <div style="background-color: #ba8b00; padding: 5px;">
-                                     {{ commande.libelle }}
-                                    </div>
+                                    {% if commande.etat_id == 1 %}
+                                        <div style="background-color: #d20000; padding: 5px;">
+                                            {{ commande.libelle }}
+                                        </div>
+                                    {% elif commande.etat_id == 2%}
+                                        <div style="background-color: #ba8b00; padding: 5px;">
+                                            {{ commande.libelle }}
+                                        </div>
                                     {% else %} <div style="background-color: #34ce57; padding: 5px;">
                                         {{ commande.libelle }} </div>
                                     {% endif %}

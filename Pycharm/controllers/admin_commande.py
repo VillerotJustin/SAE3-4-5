@@ -65,7 +65,7 @@ def admin_commande_valider():
     mycursor = get_db().cursor()
     id_commande = request.args.get('id', '')
     print(id_commande)
-    sql = '''UPDATE Commande SET idEtat=2 WHERE idCommande=%s; '''
+    sql = '''UPDATE Commande SET idEtat=(idEtat+1) WHERE idCommande=%s; '''
     mycursor.execute(sql, id_commande)
     get_db().commit()
     return redirect('/admin/commande/show') 
