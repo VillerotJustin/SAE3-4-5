@@ -256,16 +256,22 @@ CREATE TABLE `Produit` (
   `idTaille` int(11) DEFAULT NULL,
   `idGrade` int(11) DEFAULT NULL,
   PRIMARY KEY (`idProduit`),
-  KEY `fk_Produit_Fourniseur` (`idFourniseur`),
-  KEY `fk_Produit_TypeProduit` (`idType`),
-  KEY `fk_Produit_Taille` (`idTaille`),
-  KEY `fk_Produit_Grade` (`idGrade`),
-  CONSTRAINT `fk_Produit_Fourniseur` FOREIGN KEY (`idFourniseur`) REFERENCES `Fourniseur` (`idFourniseur`),
-  CONSTRAINT `fk_Produit_Grade` FOREIGN KEY (`idGrade`) REFERENCES `Grade` (`idGrade`),
-  CONSTRAINT `fk_Produit_Taille` FOREIGN KEY (`idTaille`) REFERENCES `Taille` (`idTaille`),
-  CONSTRAINT `fk_Produit_TypeProduit` FOREIGN KEY (`idType`) REFERENCES `TypeProduit` (`idType`)
+  KEY `fk_Produit_Fourniseur1` (`idFourniseur`),
+  KEY `fk_Produit_TypeProduit2` (`idType`),
+  KEY `fk_Produit_Taille3` (`idTaille`),
+  KEY `fk_Produit_Grade4` (`idGrade`),
+  CONSTRAINT `fk_Produit_Fourniseur1` FOREIGN KEY (`idFourniseur`) REFERENCES `Fourniseur` (`idFourniseur`),
+  CONSTRAINT `fk_Produit_TypeProduit2` FOREIGN KEY (`idType`) REFERENCES `TypeProduit` (`idType`),
+  CONSTRAINT `fk_Produit_Taille3` FOREIGN KEY (`idTaille`) REFERENCES `Taille` (`idTaille`),
+  CONSTRAINT `fk_Produit_Grade4` FOREIGN KEY (`idGrade`) REFERENCES `Grade` (`idGrade`)
 ) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+/*
+
+
+*/
+
 
 --
 -- Dumping data for table `Produit`
@@ -519,11 +525,11 @@ CREATE TABLE `concerne` (
   `idCommande` int(11) NOT NULL,
   `idVariation` int(11) NOT NULL,
   `quantite` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idProduit`,`idCommande`),
+  PRIMARY KEY (`idProduit`,`idCommande`,`idVariation`),
   KEY `idCommande` (`idCommande`),
-  CONSTRAINT `concerne_ibfk_1` FOREIGN KEY (`idProduit`) REFERENCES `Produit` (`idProduit`),
-  CONSTRAINT `concerne_ibfk_2` FOREIGN KEY (`idCommande`) REFERENCES `Commande` (`idCommande`),
-  CONSTRAINT `concerne_ibfk_2` FOREIGN KEY (`idVariation`) REFERENCES `Variations` (`idVariation`)
+  CONSTRAINT `fk_concerne_Produit` FOREIGN KEY (`idProduit`) REFERENCES `Produit` (`idProduit`),
+  CONSTRAINT `fk_concerne_Commande` FOREIGN KEY (`idCommande`) REFERENCES `Commande` (`idCommande`),
+  CONSTRAINT `fk_concerne_Variations` FOREIGN KEY (`idVariation`) REFERENCES `Variations` (`idVariation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

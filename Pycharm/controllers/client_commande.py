@@ -69,7 +69,7 @@ def client_commande_add():
 
     # recupper les données
 
-    sql = "SELECT idProduit, quantite FROM contient WHERE idPanier = %s"
+    sql = "SELECT idProduit, idVariation, quantite FROM contient WHERE idPanier = %s"
     mycursor.execute(sql, idPanier)
     lignes = mycursor.fetchall()
     print('lignes panier : ', lignes)
@@ -78,9 +78,9 @@ def client_commande_add():
     print('insere les données')
     for ligne in lignes:
         print('ligne : ', ligne)
-        tuple_ligne = (ligne["idProduit"], idCommande, ligne["quantite"])
+        tuple_ligne = (ligne["idProduit"], idCommande, ligne["idVariation"], ligne["quantite"])
         print('tuple_ligne : ', tuple_ligne)
-        sql = "INSERT INTO concerne VALUES (%s, %s, %s)"
+        sql = "INSERT INTO concerne VALUES (%s, %s, %s, %s)"
         mycursor.execute(sql, tuple_ligne)
         get_db().commit()
 

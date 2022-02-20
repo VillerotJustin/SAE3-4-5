@@ -8,13 +8,13 @@ DROP TABLE IF EXISTS Avis;
 DROP TABLE IF EXISTS Utilisateur;
 DROP TABLE IF EXISTS Variations;
 DROP TABLE IF EXISTS Produit;
-DROP TABLE IF EXISTS Etat;
 DROP TABLE IF EXISTS Fourniseur;
 DROP TABLE IF EXISTS Role;
 DROP TABLE IF EXISTS Kits;
 DROP TABLE IF EXISTS TypeProduit;
 DROP TABLE IF EXISTS Taille;
 DROP TABLE IF EXISTS Grade;
+DROP TABLE IF EXISTS Etat;
 
 CREATE TABLE Grade(
    idGrade INT AUTO_INCREMENT,
@@ -163,10 +163,10 @@ CREATE TABLE concerne(
    idCommande INT,
    idVariation INT,
    quantite INT,
-   PRIMARY KEY(idProduit, idCommande),
-   FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
-   FOREIGN KEY(idCommande) REFERENCES Commande(idCommande),
-   FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
+   PRIMARY KEY(idProduit, idCommande, idVariation),
+   CONSTRAINT fk_concerne_Produit FOREIGN KEY(idProduit) REFERENCES Produit(idProduit),
+   CONSTRAINT fk_concerne_Commande FOREIGN KEY(idCommande) REFERENCES Commande(idCommande),
+   CONSTRAINT fk_concerne_Variation FOREIGN KEY(idVariation) REFERENCES Variations(idVariation)
 );
 
 
@@ -231,4 +231,60 @@ INSERT INTO Produit VALUES
 (NULL, "H & S AIRBRUSH EVOLUTION TWO IN ONE", 159.90, "De Harder & Steenbeck une nouvelle ligne d’Aérographe signée Vallejo, le leader mondial des peintures pour la modélisation et le wargame L'évolution 2 en 1 est une réussite parmi les pulvérisateurs de peinture: une structure solide, un excellent traitement et une double action douce ont fait de cet instrument l'un des aérographes les plus utilisés depuis son lancement. L'Evolution est un système d'alimentation par gravité disponible sous la forme d'un modèle 2 en 1, doté de deux jeux de buses de différentes tailles et permettant une conversion rapide et flexible de l'instrument pour tous les domaines d'application. Le 2 en 1 comprend un jeu de buses de 0,2 et 0,4 mm et deux tasses de 2 et 5 ml. Disponibilité sous 4 semaines.", 2, 3, NULL, NULL);
 
 
-LOAD DATA LOCAL INFILE './DATASETS/Variations.csv' INTO TABLE Variations FIELDS TERMINATED BY ',';
+INSERT INTO `Variations` VALUES 
+(1,'','BANDAI_GU25268_GUNPLA_RE_1-100_DIJEH.png',4,1),
+(2,'','BANDAI_GUN15930_GUNPLA_BB_SINANJU.png',5,2),
+(3,'','BANDAI_GUN28742_GUNPLA_BB_GUNDAM_ASTRAY_SENGOKU.png',9,3),
+(4,'','BANDAI_GUN60583_GUNPLA_SD_CROSS_SILHOUETTE_NIGHTINGALE.png',2,4),
+(5,'','BANDAI_GUN62935_GUNPLA_SD_CROSS_SILHOUETTE_PHENEX_DESTR_NARRATIVE.png',8,5),
+(6,'','BANDAI_GUN086_GUNDAM_GUNPLA_NG_1-144_GUNDAM_RX-78.png',3,6),
+(7,'','BANDAi_GUN70677_HGBDR_1-144_GUNDAM_GP-RASE-TWO-TEN.png',4,7),
+(8,'','BANDAI_GUN82697_GUNDAM_GUNPLA_HG_1-144_216_UNICORN_GUNDAM_03_PHENEX_DESTROY_MODE_GOLD.png',9,8),
+(9,'','BANDAI_GUNPLA_RG_1-144_ZETA_MSZ-006_GUNDAM.png',3,9),
+(10,'','BANDAI_GUNPLA_RG_1-144_UNICORN_GUNDAM.png',4,10),
+(11,'','BANDAI_GUNPLA_1-100_FULL_MECHANICS_BAEL_GUNDAM.png',9,11),
+(12,'','BANDAI_GUN57025_GUNPLA_1-100_FULL_MECHANICS_BARBATOS_LUPUS_REX_SANS_SOCLE.png',3,12),
+(13,'','BANDAI_BAN82243_GUNPLA_MG.png',5,13),
+(14,'','BANDAI_GUN16188_GUNPLA_MG.png',9,14),
+(15,'','BANDAI_GUN73088_MGEX_1-100.png',3,15),
+(16,'','BANDAI_GUN55356_GUNPLA_HIRM_1-1OO.png',2,16),
+(17,'','BANDAI_GUN66737_GUNPLA_HIRM_1-100.png',9,17),
+(18,'','BANDAI_GUNPLA_MSM_ZAKU_II_GREEN_GUNDAM.png',3,18),
+(19,'','BANDAI_GUNPLA_MEGASIZE_GUNDAM_UNICORN.png',9,19),
+(20,'','BANDAI_GUN16106_GUNPLA_PG.png',3,20),
+(21,'','BANDAI_GUN82392_GUNPLA_PG.png',5,21),
+(22,'','PACK_DECAL_118.png',9,22),
+(23,'','PACK_DECAL_111.png',3,23),
+(24,'','BANDAI_GUN81428.png',5,24),
+(25,'','BANDAI_ACTION_BASE_CUSTOMIZE_SCENE_BASE.png',9,25),
+(26,'','Bandai_Tamashii_Double_Base_Transparente.png',3,26),
+(27,' Red ','BANDAI_SPIRITS_ENTRY_NIPPER_RED.png',8,27),
+(28,' Blue ','BANDAI_SPIRITS_ENTRY_NIPPER_BLUE.png',6,27),
+(29,' White ','BANDAI_SPIRITS_ENTRY_NIPPER_WHITE.png',1,27),
+(30,'','VALLEJO_GUN58801.png',9,28),
+(31,'','BANDAI_GUNPLA_MARKER_REAL_TOUCH_2_SET_6_GUNDAM.png',3,29),
+(32,'','BANDAI_GUNPLA_MARKER_SEED_SET_6_GUNDAM.png',2,30),
+(33,'','CLEANING_STATION_WITH_AIRBRUSH_HOLDER.png',9,31),
+(34,'','VALLEJO_DIAMOND_FILE_SET.png',21,32),
+(35,'','VALLEJO_EXTRA_FINE_CURVED_TWEEZERS.png',0,33),
+(36,'','VALLEJO_MASKING_TAPE_10mmX18m.png',9,34),
+(37,'','VALLEJO_MASKING_TAPE_1mmX18m.png',0,35),
+(38,'','VALLEJO_Flexi_Sanders_Dual-Grit.png',8,36),
+(39,' Old  Gold ','VALLEJO_MECHA_69_060_Old_Gold.png',6,37),
+(40,' Copper ','VALLEJO_MECHA_69_061_Copper.png',0,37),
+(41,' Bronze ','VALLEJO_MECHA_69_062_Bronze.png',8,37),
+(42,' Steel ','VALLEJO_MECHA_69_063_Steel.png',2,37),
+(43,' Light  steel ','VALLEJO_MECHA_69_064_Light_Steel.png',25,37),
+(44,' Dark  Steel ','VALLEJO_MECHA_69_064_Dark_Steel.png',8,37),
+(45,' Mecha  Matt ','VALLEJO_MECHA_69_702_Mecha_Matt_Varnish.png',0,37),
+(46,' Ivory ','VALLEJO_MECHA_APRIMER_70_643_Ivory.png',8,37),
+(47,' Pure  White ','VALLEJO_MECHA_69_001_Pure_White.png',30,37),
+(48,'','VALLEJO_50012_MODEL_AIR_71172_COLOR_SET_AND_AIRBRUSH.png',7,38),
+(49,'','FENGDA_COMPRESSOR_AS-18-3.png',0,39),
+(50,'','H_S_AIRBRUSH_EVOLUTION_TWO_IN_ONE.png',8,40);
+
+INSERT INTO Utilisateur(idUser, username, password, email, est_actif, idRole) VALUES
+(NULL,  'admin', 'sha256$pBGlZy6UukyHBFDH$2f089c1d26f2741b68c9218a68bfe2e25dbb069c27868a027dad03bcb3d7f69a','admin@admin.fr', 1, 1),
+(NULL,  'client', 'sha256$Q1HFT4TKRqnMhlTj$cf3c84ea646430c98d4877769c7c5d2cce1edd10c7eccd2c1f9d6114b74b81c4','client@client.fr', 1, 2),
+(NULL,  'client2', 'sha256$ayiON3nJITfetaS8$0e039802d6fac2222e264f5a1e2b94b347501d040d71cfa4264cad6067cf5cf3', 'client2@client2.fr', 1,2);
+
