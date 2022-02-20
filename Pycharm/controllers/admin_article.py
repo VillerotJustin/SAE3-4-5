@@ -266,7 +266,7 @@ def valid_add_article():
     get_db().commit()
 
     print(u'article ajouté , nom: ', nom, ' - typeArticle:', idType, ' - prix:', prix, ' - stock:', stock, ' - description:', description, ' - image:', image)
-    message = u'article ajouté , nom:'+nom + '- typeArticle:' + idType + ' - prix:' + str(prix) + ' - stock:'+  stock + ' - description:' + description + ' - image:' + image
+    message = u'article ajouté , nom:'+nom + '- typeArticle:' + idType + ' - prix:' + str(prix) + ' - stock:' + stock + ' - description:' + description + ' - image:' + image
     flash(message)
     return redirect(url_for('admin_article.show_article'))
 
@@ -274,6 +274,15 @@ def valid_add_article():
 @admin_article.route('/admin/article/delete/<int:id>', methods=['GET'])
 def delete_article(id):
     mycursor = get_db().cursor()
+    sql = '''SELECT * FROM contient WHERE idProduit = %s;'''
+    test_contient = mycursor.execute(sql, id)
+    sql = '''SELECT * FROM concerne WHERE idProduit = %s;'''
+    test_concerne = mycursor.execute(sql, id)
+    if (test_contient == 1 or test_concerne == 1):
+        message = ("L'article avec pour id :" + str(id) + " ne peut pas etre suprimmer car il est actuellement dans la commande d'un client")
+        flash(message)
+        return redirect(url_for('admin_article.show_article'))
+
     sql = '''DELETE FROM Variations WHERE idProduit = %s;'''
     mycursor.execute(sql, id)
     get_db().commit()
