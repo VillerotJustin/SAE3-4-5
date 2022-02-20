@@ -85,7 +85,7 @@
                         <td><label for="Taille">Taille</label></td>
                         <td>
                             <select class="form-control" name="Taille" id="Taille">
-                                <option value="">Sélectionner une taille si existant sur le produit</option>
+                                <option value="0">Sélectionner une taille si existant sur le produit</option>
                                 {% for type in Taille %}
                                     <option value="{{ type.idTaille }}"> {{ type.LibelleTaille }} </option>
                                 {% endfor %}
@@ -96,7 +96,7 @@
                         <td><label for="Grade">Grade</label></td>
                         <td>
                             <select class="form-control" name="Grade" id="Grade">
-                                <option value="">Sélectionner un grade d'impression si existant sur le produit</option>
+                                <option value="0">Sélectionner un grade d'impression si existant sur le produit</option>
                                 {% for type in Grade %}
                                     <option value="{{ type.idGrade }}"> {{ type.Libelle }} / {{ type.abreviation }} </option>
                                 {% endfor %}

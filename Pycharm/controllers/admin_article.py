@@ -233,10 +233,18 @@ def valid_add_article():
     nom = request.form.get('nom', '')
     description = request.form.get('description', '')
     prix = float(request.form.get('Prix', ''))
-    idFourniseur = request.form.get('fournisseur', None)
-    idType = request.form.get('TypeProduit', None)
-    idTaille = request.form.get('Taille', None)
-    idGrade = request.form.get('Grade', None)
+    idFourniseur = int(request.form.get('fournisseur', None))
+    idType = int(request.form.get('TypeProduit', None))
+    idTaille = int(request.form.get('Taille', None))
+    print('idTaille : ', idTaille)
+    if (idTaille == 0):
+        idTaille = None
+        print('idTaille reatribution : ', idTaille)
+    idGrade = int(request.form.get('Grade', None))
+    print('idGrade : ', idGrade)
+    if (idGrade == 0):
+        idGrade = None
+        print('idGrade reatribution : ', idGrade)
     tuple_add = (nom, prix, description, idFourniseur, idType, idTaille, idGrade)
     print('tuple_add : ', tuple_add)
 
@@ -266,7 +274,7 @@ def valid_add_article():
     get_db().commit()
 
     print(u'article ajouté , nom: ', nom, ' - typeArticle:', idType, ' - prix:', prix, ' - stock:', stock, ' - description:', description, ' - image:', image)
-    message = u'article ajouté , nom:'+nom + '- typeArticle:' + idType + ' - prix:' + str(prix) + ' - stock:' + stock + ' - description:' + description + ' - image:' + image
+    message = u'article ajouté , nom:'+nom + '- typeArticle:' + str(idType) + ' - prix:' + str(prix) + ' - stock:' + stock + ' - description:' + description + ' - image:' + image
     flash(message)
     return redirect(url_for('admin_article.show_article'))
 
@@ -297,26 +305,99 @@ def delete_article(id):
 
 @admin_article.route('/admin/article/edit/<int:id>', methods=['GET'])
 def edit_article(id):
+    # Formulaire
     mycursor = get_db().cursor()
-    article = None
-    types_articles = None
-    return render_template('admin/article/edit_article.html', article=article, types_articles=types_articles)
+    sql = '''SELECT * FROM TypeProduit;'''
+    mycursor.execute(sql)
+    TypeProduit = mycursor.fetchall()
+    sql = '''SELECT * FROM Fourniseur;'''
+    mycursor.execute(sql)
+    fournisseur = mycursor.fetchall()
+    sql = '''SELECT * FROM Taille;'''
+    mycursor.execute(sql)
+    Taille = mycursor.fetchall()
+    sql = '''SELECT * FROM Grade;'''
+    mycursor.execute(sql)
+    Grade = mycursor.fetchall()
+
+    # Donnee produit
+    sql = '''SELECT Produit.*, V2.*
+                FROM Produit 
+                INNER JOIN Variations V2 on Produit.idProduit = V2.idProduit
+                WHERE Produit.idProduit = %s'''
+    mycursor.execute(sql, id)
+    Produit = mycursor.fetchone()
+
+    return render_template('admin/article/edit_article.html', TypeProduit=TypeProduit
+                                                            , fournisseur=fournisseur
+                                                            , Taille=Taille
+                                                            , Grade=Grade
+                                                            , Produit=Produit)
 
 
-@admin_article.route('/admin/article/edit/<int:id>', methods=['POST'])
+@admin_article.route('/admin/article/edit', methods=['POST'])
 def valid_edit_article():
     mycursor = get_db().cursor()
-    nom = request.form['nom']
-    id = request.form.get('id', '')
-    type_article_id = request.form.get('type_article_id', '')
-    #type_article_id = int(type_article_id)
-    prix = request.form.get('prix', '')
-    stock = request.form.get('stock', '')
-    description = request.form.get('description', '')
-    image = request.form.get('image', '')
 
-    print(u'article modifié , nom : ', nom, ' - type_article:', type_article_id, ' - prix:', prix, ' - stock:', stock, ' - description:', description, ' - image:', image)
-    message = u'article modifié , nom:'+nom + '- type_article:' + type_article_id + ' - prix:' + prix + ' - stock:'+  stock + ' - description:' + description + ' - image:' + image
+    # Recuperation donnee
+    idProduit = int(request.form.get('id', None))
+    nom = request.form.get('nom', '')
+    description = request.form.get('description', '')
+    prix = float(request.form.get('Prix', ''))
+    idFourniseur = int(request.form.get('fournisseur', None))
+    idType = int(request.form.get('TypeProduit', None))
+    idTaille = int(request.form.get('Taille', None))
+    print('idTaille : ', idTaille)
+    if (idTaille == 0):
+        idTaille = None
+        print('idTaille reatribution : ', idTaille)
+    idGrade = int(request.form.get('Grade', None))
+    print('idGrade : ', idGrade)
+    if (idGrade == 0):
+        idGrade = None
+        print('idGrade reatribution : ', idGrade)
+    tuple_add = (nom, prix, description, idFourniseur, idType, idTaille, idGrade, idProduit)
+    print('tuple_add : ', tuple_add)
+
+    # edition du produit
+    sql = '''
+    UPDATE Produit 
+    SET LibelleProduit = %s
+        , Prix = %s
+        , Description = %s
+        , idFourniseur = %s
+        , idType = %s
+        , idTaille = %s
+        , idGrade = %s
+    WHERE idProduit = %s;
+    '''
+    mycursor.execute(sql, tuple_add)
+    get_db().commit()
+
+
+    # donnee variation
+    sql = '''SELECT idVariation FROM Variations WHERE idProduit = %s'''
+    mycursor.execute(sql, idProduit)
+    idVariation = mycursor.fetchone()
+    idVariation = idVariation["idVariation"]
+    libelleVariation = ""
+    image = request.form.get('Image', '')
+    stock = request.form.get('stock', '')
+    tuple_variation = (image, stock, idProduit, idVariation)
+    print('tuple_variation : ', tuple_variation)
+
+    # edition de la variation par default
+    sql = '''
+        UPDATE Variations 
+        SET imageProduit = %s
+            , Stock = %s
+        WHERE idProduit = %s and idVariation = %s;
+        '''
+    mycursor.execute(sql, tuple_variation)
+    get_db().commit()
+
+    print(u'article modifié , nom : ', nom, ' - type_article:', idType, ' - prix:', prix, ' - stock:', stock, ' - description:', description, ' - image:', image)
+    message = u'article modifié , nom:'+nom + '- type_article:' + str(idType) + ' - prix:' + str(prix) + ' - stock:'+  stock + ' - description:' + description + ' - image:' + image
     flash(message)
     return redirect(url_for('admin_article.show_article'))
 
