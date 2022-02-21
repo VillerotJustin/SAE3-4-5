@@ -131,82 +131,6 @@ def show_article():
                            , filter_Fournisseur=filter_Fournisseur)
 
 
-@admin_article.route('/admin/type_article/show')
-def show_type_article():
-    mycursor = get_db().cursor()
-    sql = '''SELECT * FROM TypeProduit;'''
-    mycursor.execute(sql)
-    type_article = mycursor.fetchall()
-    return render_template('admin/type_article/show_type_article.html', type_article=type_article)
-
-
-@admin_article.route('/admin/type_article/add')
-def add_type_article():
-    return render_template('admin/type_article/add_type_article.html')
-
-
-@admin_article.route('/admin/type_article_add', methods=['POST'])
-def valid_add_type_article():
-    mycursor = get_db().cursor()
-    libelle = request.form.get('libelle', '')
-    sql = '''INSERT INTO TypeProduit VALUES
-                (NULL, %s);'''
-    mycursor.execute(sql, libelle)
-    get_db().commit()
-    return render_template('admin/type_article/show_type_article.html')
-
-
-@admin_article.route('/admin/type_article/edit/<int:id>')
-def edit_type_article(id):
-    mycursor = get_db().cursor()
-    sql = '''SELECT * FROM TypeProduit WHERE idType=%s'''
-    mycursor.execute(sql, id)
-    type_article = mycursor.fetchone()
-    print(type_article)
-    return render_template('admin/type_article/edit_type_article.html', type_article=type_article)
-
-
-@admin_article.route('/admin/type_article/edit/', methods=['POST'])
-def valid_edit_type_article():
-    mycursor = get_db().cursor()
-    id = request.form.get('id', '')
-    libelle = request.form.get('libelle', '')
-    sql = '''UPDATE TypeProduit SET LibelleType=%s WHERE idType=%s'''
-    mycursor.execute(sql, (str(libelle), id))
-    get_db().commit()
-    print('new libelle: ', str(libelle), '; id type: ', str(id))
-    return redirect(url_for('admin_article.show_type_article'))
-
-@admin_article.route('/admin/type_article/delete/confirm/<int:id>', methods=['GET'])
-def delete_type_article(id):
-    mycursor = get_db().cursor()
-    sql = '''SELECT * FROM Produit 
-             JOIN Variations ON Produit.idProduit = Variations.idProduit 
-             WHERE idType=%s'''
-    mycursor.execute(sql, id)
-    articles = mycursor.fetchall()
-    sql = '''SELECT COUNT(idProduit) AS nbr_articles FROM Produit WHERE idType=%s'''
-    mycursor.execute(sql, id)
-    nbr_articles = mycursor.fetchone()
-    sql = '''SELECT * FROM TypeProduit WHERE idType=%s'''
-    mycursor.execute(sql, id)
-    type_article = mycursor.fetchone()
-    return render_template('admin/type_article/delete_type_article.html', articles=articles, nbr_articles=nbr_articles, type_article=type_article)
-
-
-@admin_article.route('/admin/type_article/delete/', methods=['GET'])
-def valid_delete_type_article():
-    mycursor = get_db().cursor()
-    # bar = request.args.to_dict()
-    # print(bar)
-    id_produit = request.args.get('id_article', '')
-    sql = '''DELETE FROM Variations WHERE idProduit=%s'''
-    mycursor.execute(sql, id_produit)
-    print("un type d'article supprimé, id :", id)
-    flash(u"un type d'article supprimé, id : " + str(id))
-    return redirect(url_for('admin_article.show_type_article'))
-
-
 @admin_article.route('/admin/article/add', methods=['GET'])
 def add_article():
     mycursor = get_db().cursor()
@@ -281,15 +205,29 @@ def valid_add_article():
     return redirect(url_for('admin_article.show_article'))
 
 
-@admin_article.route('/admin/article/delete/<int:id>', methods=['GET'])
-def delete_article(id):
+@admin_article.route('/admin/article/delete/<int:id>/<int:id2>', methods=['GET'])
+def delete_article(id, id2):
     mycursor = get_db().cursor()
+    sql = '''SELECT Produit.*, V2.*
+            FROM Produit 
+            INNER JOIN Variations V2 on Produit.idProduit = V2.idProduit
+            WHERE Produit.idProduit = %s'''
+    variations = mycursor.execute(sql, id)
     sql = '''SELECT * FROM contient WHERE idProduit = %s;'''
     test_contient = mycursor.execute(sql, id)
     sql = '''SELECT * FROM concerne WHERE idProduit = %s;'''
     test_concerne = mycursor.execute(sql, id)
-    if (test_contient == 1 or test_concerne == 1):
-        message = ("L'article avec pour id :" + str(id) + " ne peut pas etre suprimmer car il est actuellement dans la commande d'un client")
+    if (test_contient >= 1 or test_concerne >= 1):
+        message = ("L'article avec pour id :" + str(id) + " ne peut pas etre supprimé car il est actuellement dans la commande d'un client")
+        flash(message)
+        return redirect(url_for('admin_article.show_article'))
+
+    if variations > 1:
+        sql =''' DELETE FROM Variations WHERE idVariation = %s '''
+        mycursor.execute(sql, id2)
+        get_db().commit()
+        print("une variation supprimée, id du produit: " + str(id) + ' ;id de la variation: ' + str(id2))
+        message = ("une variation a été supprimée, id du produit: " + str(id) + '; id de la variation: ' + str(id2))
         flash(message)
         return redirect(url_for('admin_article.show_article'))
 
@@ -402,6 +340,82 @@ def valid_edit_article():
     message = u'article modifié , nom:'+nom + '- type_article:' + str(idType) + ' - prix:' + str(prix) + ' - stock:'+  stock + ' - description:' + description + ' - image:' + image
     flash(message)
     return redirect(url_for('admin_article.show_article'))
+
+@admin_article.route('/admin/type_article/show')
+def show_type_article():
+    mycursor = get_db().cursor()
+    sql = '''SELECT * FROM TypeProduit;'''
+    mycursor.execute(sql)
+    type_article = mycursor.fetchall()
+    return render_template('admin/type_article/show_type_article.html', type_article=type_article)
+
+
+@admin_article.route('/admin/type_article/add')
+def add_type_article():
+    return render_template('admin/type_article/add_type_article.html')
+
+
+@admin_article.route('/admin/type_article/valid_add', methods=['POST'])
+def valid_add_type_article():
+    mycursor = get_db().cursor()
+    libelle = request.form.get('libelle', '')
+    sql = '''INSERT INTO TypeProduit VALUES
+                (NULL, %s);'''
+    mycursor.execute(sql, libelle)
+    print(libelle)
+    get_db().commit()
+    return render_template('admin/type_article/show_type_article.html')
+
+
+@admin_article.route('/admin/type_article/edit/<int:id>')
+def edit_type_article(id):
+    mycursor = get_db().cursor()
+    sql = '''SELECT * FROM TypeProduit WHERE idType=%s'''
+    mycursor.execute(sql, id)
+    type_article = mycursor.fetchone()
+    print(type_article)
+    return render_template('admin/type_article/edit_type_article.html', type_article=type_article)
+
+
+@admin_article.route('/admin/type_article/edit/', methods=['POST'])
+def valid_edit_type_article():
+    mycursor = get_db().cursor()
+    id = request.form.get('id', '')
+    libelle = request.form.get('libelle', '')
+    sql = '''UPDATE TypeProduit SET LibelleType=%s WHERE idType=%s'''
+    mycursor.execute(sql, (str(libelle), id))
+    get_db().commit()
+    print('new libelle: ', str(libelle), '; id type: ', str(id))
+    return redirect(url_for('admin_article.show_type_article'))
+
+@admin_article.route('/admin/type_article/delete/confirm/<int:id>', methods=['GET'])
+def delete_type_article(id):
+    mycursor = get_db().cursor()
+    sql = '''SELECT * FROM Produit 
+             JOIN Variations ON Produit.idProduit = Variations.idProduit 
+             WHERE idType=%s'''
+    mycursor.execute(sql, id)
+    articles = mycursor.fetchall()
+    sql = '''SELECT COUNT(idProduit) AS nbr_articles FROM Produit WHERE idType=%s'''
+    mycursor.execute(sql, id)
+    nbr_articles = mycursor.fetchone()
+    sql = '''SELECT * FROM TypeProduit WHERE idType=%s'''
+    mycursor.execute(sql, id)
+    type_article = mycursor.fetchone()
+    return render_template('admin/type_article/delete_type_article.html', articles=articles, nbr_articles=nbr_articles, type_article=type_article)
+
+
+@admin_article.route('/admin/type_article/delete/', methods=['GET'])
+def valid_delete_type_article():
+    mycursor = get_db().cursor()
+    # bar = request.args.to_dict()
+    # print(bar)
+    id_produit = request.args.get('id_article', '')
+    sql = '''DELETE FROM Variations WHERE idProduit=%s'''
+    mycursor.execute(sql, id_produit)
+    print("un type d'article supprimé, id :", id)
+    flash(u"un type d'article supprimé, id : " + str(id))
+    return redirect(url_for('admin_article.show_type_article'))
 
 
 @admin_article.route('/admin/type_article/details')
