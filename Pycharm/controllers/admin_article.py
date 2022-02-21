@@ -163,12 +163,12 @@ def valid_add_article():
     idType = int(request.form.get('TypeProduit', None))
     idTaille = int(request.form.get('Taille', None))
     print('idTaille : ', idTaille)
-    if (idTaille == 0):
+    if idTaille == 0:
         idTaille = None
         print('idTaille reatribution : ', idTaille)
     idGrade = int(request.form.get('Grade', None))
     print('idGrade : ', idGrade)
-    if (idGrade == 0):
+    if idGrade == 0:
         idGrade = None
         print('idGrade reatribution : ', idGrade)
     tuple_add = (nom, prix, description, idFourniseur, idType, idTaille, idGrade)
@@ -213,14 +213,25 @@ def delete_article(id, id2):
             INNER JOIN Variations V2 on Produit.idProduit = V2.idProduit
             WHERE Produit.idProduit = %s'''
     variations = mycursor.execute(sql, id)
-    sql = '''SELECT * FROM contient WHERE idProduit = %s;'''
-    test_contient = mycursor.execute(sql, id)
-    sql = '''SELECT * FROM concerne WHERE idProduit = %s;'''
-    test_concerne = mycursor.execute(sql, id)
-    if (test_contient >= 1 or test_concerne >= 1):
-        message = ("L'article avec pour id :" + str(id) + " ne peut pas etre supprimé car il est actuellement dans la commande d'un client")
-        flash(message)
-        return redirect(url_for('admin_article.show_article'))
+    sql = '''SELECT * FROM contient WHERE idProduit = %s AND idVariation = %s;'''
+    test_contient = mycursor.execute(sql, (id, id2))
+    sql = '''SELECT * FROM concerne WHERE idProduit = %s AND idVariation = %s;'''
+    test_concerne = mycursor.execute(sql, (id, id2))
+    sql = '''SELECT * FROM Commande 
+             JOIN concerne c on Commande.idCommande = c.idCommande 
+             WHERE idProduit = %s AND idVariation =%s'''
+    mycursor.execute(sql, (id, id2))
+    test_commande = mycursor.fetchall()
+    for test in test_commande:
+        print(test)
+        if test.get("idEtat") != 3 and (test_contient >= 1 or test_concerne >= 1):
+            message = ("L'article avec pour id :" + str(id) + " ne peut pas etre supprimé car il est actuellement dans la commande d'un ou plusieurs clients")
+            flash(message)
+            return redirect(url_for('admin_article.show_article'))
+        else:
+            sql = '''DELETE FROM concerne WHERE idProduit = %s AND idVariation = %s'''
+            mycursor.execute(sql, (id, id2))
+            get_db().commit()
 
     if variations > 1:
         sql =''' DELETE FROM Variations WHERE idVariation = %s '''
@@ -293,7 +304,7 @@ def valid_edit_article():
         print('idTaille reatribution : ', idTaille)
     idGrade = int(request.form.get('Grade', None))
     print('idGrade : ', idGrade)
-    if (idGrade == 0):
+    if idGrade == 0:
         idGrade = None
         print('idGrade reatribution : ', idGrade)
     tuple_add = (nom, prix, description, idFourniseur, idType, idTaille, idGrade, idProduit)
