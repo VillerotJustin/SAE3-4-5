@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f86f7413-97b4-4db3-9597-c90efd18619b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pycharm/controllers/admin_article.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pycharm/controllers/admin_article.py" afterDir="false" />
-    </list>
+    <list default="true" id="f86f7413-97b4-4db3-9597-c90efd18619b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,7 +42,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Flask server.Flask (Pycharm/app_etu.py)">
+  <component name="RunManager" selected="Database Script.SAE345.sql">
     <configuration name="SAE345.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
       <script-file value="$PROJECT_DIR$/SAE345.sql" />
       <script-mode>FILE</script-mode>
@@ -91,8 +88,6 @@
     </configuration>
     <list>
       <item itemvalue="Database Script.SAE345.sql" />
-      <item itemvalue="Flask server.Flask (Pycharm/app_etu.py)" />
-      <item itemvalue="Python.main" />
     </list>
     <recent_temporary>
       <list>
@@ -121,8 +116,5 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/SAE3_4_5$Flask__Pycharm_app_etu_py_.coverage" NAME="Flask (Pycharm/app_etu.py) Coverage Results" MODIFIED="1645454734171" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
