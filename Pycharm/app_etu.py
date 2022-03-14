@@ -11,10 +11,12 @@ from controllers.client_article import *
 from controllers.client_panier import *
 from controllers.client_commande import *
 from controllers.client_commentaire import *
+from controllers.client_modif import *
 
 from controllers.admin_article import *
 from controllers.admin_commande import *
 from controllers.admin_panier import *
+
 
 app = Flask(__name__)
 app.secret_key = 'une cle(token) : grain de sel(any random string)'
@@ -58,6 +60,7 @@ app.register_blueprint(client_article)
 app.register_blueprint(client_commande)
 app.register_blueprint(client_commentaire)
 app.register_blueprint(client_panier)
+app.register_blueprint(client_modif)
 
 app.register_blueprint(admin_article)
 app.register_blueprint(admin_commande)
