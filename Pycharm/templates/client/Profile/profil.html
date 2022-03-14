@@ -1,0 +1,64 @@
+{% extends "client/layout_client.html" %}
+{% block body %}
+<div class="container">
+    <h3>Mon Profil</h3>
+    <h5>
+        Mon numéros client: {{ user.idUser }}<br>
+        Mon Nom d'utilisateur: {{ user.username }}<br>
+        Mon mail: {{ user.email }}<br>
+    </h5>
+
+    <h3>Mes adresse</h3>
+
+    <a href="/client/modif/add_Adresse">
+        <button class="btn btn-primary float-left">
+            Ajouter
+        </button>
+    </a>
+<br>
+<br>
+<br>
+
+     <table class="table my-0" id="dataTable" style="text-align: center">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>adresse</th>
+                            <th>code_postale</th>
+                            <th>ville</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if adresse is defined %}
+                            {% for ligne in adresse %}
+                                <tr id="" style=" font-weight: bold;">
+                                    <td>{{ ligne.idAdresse }}</td>
+                                    <td>{{ ligne.adresse}}</td>
+                                    <td>{{ ligne.code_postale}}</td>
+                                    <td>{{ ligne.ville }} </td>
+                                    <td style="text-align: center;">
+                                        <a href="/client/modif/editAdresse/{{ ligne.idAdresse }}">
+                                            <button class="btn btn-primary float-right ml-2">
+                                                Editer
+                                             </button>
+                                        </a>
+                                        <a href="/client/modif/deleteAdresse/{{ ligne.idAdresse }}"  onclick="return confirm('Are you sure?')">
+                                            <button class="btn btn-danger float-right">
+                                                Supprimer
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                        <tr id="" style="font-weight: bold;">
+                            <td>Pas d'adresse</td>
+                        </tr>
+                        {% endif %}
+
+
+                        </tbody>
+                    </table>
+</div>
+{% endblock %}
