@@ -1,0 +1,45 @@
+{% extends "client/layout_client.html" %}
+{% block body %}
+<div class="container">
+
+    <form action="{{ url_for('client_modif.valid_edit_adresse') }}"  method="post">
+            <fieldset>
+                <legend><h2>Edition d'une adresse</h2></legend>
+                <input type="hidden" name="id" value="{{ Adresse.idAdresse }}">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>
+                            <label for="adresse">Adresse</label>
+                        </th>
+                        <th>
+                            <input class="form-control" type="text" value="{{ Adresse.adresse }}" name="adresse" required id="adresse">
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="code_postale">Code postale</label>
+                        </td>
+                        <td>
+                            <input class="form-control" type="number" name="code_postale" value="{{ Adresse.code_postale }}" required id="code_postale">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="ville">Ville</label>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" name="ville" value="{{ Adresse.ville }}" required id="ville">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <div class="center">
+                    <input class="form-control" type="submit" name="f1_submit" value="Valider">
+                </div>
+            </fieldset>
+        </form>
+
+</div>
+{% endblock %}

@@ -6,12 +6,13 @@ from flask import Flask, request, render_template, redirect, url_for, abort, fla
 from connexion_db import get_db
 
 client_modif = Blueprint('client_modif', __name__,
-                        template_folder='templates')
+                         template_folder='templates')
+
 
 @client_modif.route('/client/modif/profile', methods=['GET'])
 def client_profile():
     mycursor = get_db().cursor()
-    sql='''
+    sql = '''
     SELECT * FROM Utilisateur WHERE idUser = %s;
     '''
     mycursor.execute(sql, session['user_id'])
@@ -26,9 +27,11 @@ def client_profile():
 
     return render_template('client/Profile/profil.html', user=user, adresse=adresse)
 
+
 @client_modif.route('/client/modif/add_Adresse')
 def link_add_Adresse():
     return render_template('client/Profile/adresseAdd.html')
+
 
 @client_modif.route('/client/modif/valid_add_adresse', methods=['POST'])
 def add_Adresse():
@@ -36,8 +39,8 @@ def add_Adresse():
     adresse = request.form.get('adresse', '')
     code_postale = request.form.get('code_postale', '')
     ville = request.form.get('ville', '')
-    tuple_add=(adresse, code_postale, ville, session['user_id'])
-    sql='''
+    tuple_add = (adresse, code_postale, ville, session['user_id'])
+    sql = '''
     INSERT INTO Adresse VALUE (NULL, %s, %s, %s, %s);
     '''
     mycursor.execute(sql, tuple_add)
@@ -46,23 +49,67 @@ def add_Adresse():
 
     return redirect(url_for('client_modif.client_profile'))
 
-@client_modif.route('/client/modif/edit_Adresse/<int:id>')
-def edit_type_article(id):
+
+@client_modif.route('/client/modif/editAdresse/<int:idAdresse>')
+def edit_adresse(idAdresse):
     mycursor = get_db().cursor()
     sql = '''SELECT * FROM Adresse WHERE idAdresse=%s'''
-    mycursor.execute(sql, id)
+    mycursor.execute(sql, idAdresse)
     Adresse = mycursor.fetchone()
     print(Adresse)
-    return render_template('admin/type_article/edit_type_article.html', Adresse=Adresse)
+    return render_template('client/Profile/editAdresse.html', Adresse=Adresse)
 
 
-@client_modif.route('/admin/type_article/edit/', methods=['POST'])
-def valid_edit_type_article():
+@client_modif.route('/client/modif/valid_edit_Adresse/', methods=['POST'])
+def valid_edit_adresse():
     mycursor = get_db().cursor()
-    id = request.form.get('id', '')
-    libelle = request.form.get('libelle', '')
-    sql = '''UPDATE TypeProduit SET LibelleType=%s WHERE idType=%s'''
-    mycursor.execute(sql, (str(libelle), id))
+    idAdresse = request.form.get('id', '')
+    adresse = request.form.get('adresse', '')
+    code_postale = request.form.get('code_postale', '')
+    ville = request.form.get('ville', '')
+    tuple_edit=(adresse, code_postale, ville, idAdresse)
+    sql = '''
+    UPDATE Adresse
+    SET adresse=%s, code_postale=%s, ville=%s
+    WHERE idAdresse=%s
+    '''
+    mycursor.execute(sql, tuple_edit)
     get_db().commit()
-    print('new libelle: ', str(libelle), '; id type: ', str(id))
-    return redirect(url_for('admin_article.show_type_article'))
+    return redirect(url_for('client_modif.client_profile'))
+
+
+@client_modif.route('/client/modif/deleteAdresse/<int:idAdresse>', methods=['GET'])
+def delete_Adresse(idAdresse):
+    mycursor = get_db().cursor()
+
+    # ---------------------------
+
+    sql = '''SELECT * FROM Commande 
+                 WHERE idAdresse = %s'''
+    mycursor.execute(sql, (idAdresse))
+    test_commande = mycursor.fetchall()
+    for test in test_commande:
+        print(test)
+        if ((test.get("idEtat") != 3)):
+            message = ("L'adresse avec pour id :" + str(idAdresse)
+                       + " ne peut pas etre supprimé car elle est actuellement utiliser dans une commande en cours")
+            flash(message)
+            return redirect(url_for('client_modif.client_profile'))
+        else:
+            sql = '''DELETE FROM concerne WHERE idCommande = %s'''
+            mycursor.execute(sql, (test["idCommande"]))
+            get_db().commit()
+            sql = '''DELETE FROM Commande WHERE idAdresse = %s AND idCommande = %s'''
+            mycursor.execute(sql, (idAdresse, test["idCommande"]))
+            get_db().commit()
+
+    # ---------------------------
+
+    sql = '''DELETE FROM Adresse WHERE idAdresse=%s'''
+    mycursor.execute(sql, idAdresse)
+    get_db().commit()
+    print('Adresse suprimer: ', str(idAdresse))
+    message = ("une adresse supprimé, id :" + str(idAdresse))
+    flash(message)
+
+    return redirect(url_for('client_modif.client_profile'))
