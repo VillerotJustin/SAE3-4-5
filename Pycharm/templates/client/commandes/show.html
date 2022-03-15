@@ -20,7 +20,7 @@
                 </tbody>
             </table>
             <hr>
-        {% endif %}
+            {% endif %}
         <div class="card shadow">
             <div class="card-header py-3">
                 <p class="text-primary m-0 font-weight-bold">Toutes mes commandes</p>
@@ -33,6 +33,7 @@
                             <th>Date de commande</th>
                             <th>Nombre d'articles</th>
                             <th>Coût total</th>
+                            <th>Adresse</th>
                             <th>Etat de la commande</th>
                             <th style="text-align: center;">Options</th>
                         </tr>
@@ -44,6 +45,9 @@
                                 <td> {{ commande.nbr_articles }} </td>
                                 <td>
                                     {{ "{:,.2f} €".format(commande.prix_total) }}
+                                </td>
+                                <td>
+                                    {{ commande.adresse }} {{ commande.code_postale }} {{ commande.ville }}
                                 </td>
                                 <td style="text-align: center;">
                                     {% if commande.etat_id == 1 %}

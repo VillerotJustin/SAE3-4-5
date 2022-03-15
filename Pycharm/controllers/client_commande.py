@@ -90,8 +90,30 @@ def client_commande_add():
     mycursor.execute(sql, idPanier)
     get_db().commit()
 
-    flash(u'Commande ajoutée')
-    return redirect('/client/article/show')
+# ==================================== Info pour choix de l'adresse
+
+    sql = '''SELECT Produit.LibelleProduit AS nom
+                           , concerne.quantite AS quantite
+                           , Produit.Prix As prix
+                           , concerne.quantite * Produit.Prix As prix_ligne
+                     From Commande
+                     INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
+                     INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
+                     INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
+                     WHERE Commande.idCommande = %s
+            '''
+    mycursor.execute(sql, idCommande)
+    articles_commande = mycursor.fetchall()
+
+    sql = '''
+    SELECT *
+    From Adresse
+    WHERE idUser = %s
+    '''
+    mycursor.execute(sql, idUser)
+    Adresses = mycursor.fetchall()
+
+    return render_template('client/commandes/addCommande.html', Adresses=Adresses, articles_commande=articles_commande, idCommande=idCommande)
     #return redirect(url_for('client_index'))
 
 
@@ -112,10 +134,12 @@ def client_commande_show():
                    , SUM(concerne.quantite * Produit.Prix)  As prix_total
                    , Commande.idEtat AS etat_id
                    , Etat.libelleEtat AS libelle
+                   , Adresse.*
              From Commande
              INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
              INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
              INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
+             INNER JOIN Adresse on Commande.idAdresse = Adresse.idAdresse
              WHERE Commande.idUser = %s
              GROUP BY Commande.idCommande
     '''
@@ -138,3 +162,18 @@ def client_commande_show():
     articles_commande = mycursor.fetchall()
     return render_template('client/commandes/show.html', commandes=commandes, articles_commande=articles_commande)
 
+@client_commande.route('/client/modif/validadressecommande', methods=['get','post'])
+def validadressecommande():
+    mycursor = get_db().cursor()
+    idAdresse = request.form.get('Adresse', '')
+    idCommande= request.form.get('idCommande', '')
+    tuple_edit = (idAdresse, idCommande)
+    print("valid adresse: ",tuple_edit)
+    sql = '''
+        UPDATE Commande
+        SET idAdresse=%s
+        WHERE idCommande=%s
+        '''
+    mycursor.execute(sql, tuple_edit)
+    get_db().commit()
+    return redirect('/client/article/show')

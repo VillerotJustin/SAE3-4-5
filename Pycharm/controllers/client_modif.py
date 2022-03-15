@@ -113,3 +113,4 @@ def delete_Adresse(idAdresse):
     flash(message)
 
     return redirect(url_for('client_modif.client_profile'))
+

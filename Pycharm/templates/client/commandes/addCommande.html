@@ -2,12 +2,35 @@
 {% block body %}
 <div class="container">
 
-    <form action="{{ url_for('client_modif.add_Adresse') }}"  method="post">
+    <form action="{{ url_for('client_commande.validadressecommande') }}"  method="POST">
             <fieldset>
-
-                Liste déroulante adresse
-
+                {% if articles_commande %}
+                    <h3>Votre commande</h3>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr><th>Nom</th><th>Quantite</th><th>Prix</th><th>Prix total</th></tr>
+                        </thead>
+                        <tbody>
+                                {% for ligne in articles_commande %}
+                                    <tr>
+                                        <td>{{ ligne.nom }}</td>
+                                        <td>{{ ligne.quantite }}</td>
+                                        <td>{{ ligne.prix }} €</td>
+                                        <td>{{ ligne.prix_ligne }} €  </td>
+                                    </tr>
+                                {% endfor %}
+                        </tbody>
+                    </table>
+                    <hr>
+                {% endif %}
                 <br>
+                <select class="form-control" name="Adresse" id="Adresse">
+                    <option value="0">Sélectionner l'adresse que vous voulez utilisez </option>
+                    {% for ligne in Adresses %}
+                        <option value="{{ ligne.idAdresse }}"> {{ ligne.adresse }} {{ ligne.code_postale }} {{ ligne.ville }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="idCommande" value="{{ idCommande }}">
                 <div class="center">
                     <input class="form-control" type="submit" name="f1_submit" value="Valider">
                 </div>
