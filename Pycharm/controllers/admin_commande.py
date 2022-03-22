@@ -30,11 +30,13 @@ def admin_commande_show():
                        , SUM(concerne.quantite * Produit.Prix)  As prix_total
                        , Commande.idEtat AS etat_id
                        , Etat.libelleEtat AS libelle
+                       , Adresse.*
                  From Commande
                  INNER JOIN Etat Etat on Commande.idEtat = Etat.idEtat
                  INNER JOIN concerne concerne on Commande.idCommande = concerne.idCommande
                  INNER JOIN Produit Produit on concerne.idProduit = Produit.idProduit
                  INNER JOIN Utilisateur on Commande.idUser = Utilisateur.idUser
+                 INNER JOIN Adresse on Commande.idAdresse = Adresse.idAdresse
                  WHERE Commande.idUser = 2
                  GROUP BY Commande.idCommande
         '''
