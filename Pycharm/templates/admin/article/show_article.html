@@ -48,7 +48,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-footer">
+                            <div class="card-footer" {% if article.Stock < 3 %} {% if article.Stock < 1 %}style="background-color:red" {% endif %} style="background-color:yellow"{% endif %}>
                             {% if article.Stock is defined %}
                                  {% if article.Stock > 0 %}
                                     <small class="text-muted">Stock restant : {{ article.Stock }}</small>
