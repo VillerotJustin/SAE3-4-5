@@ -16,6 +16,7 @@ from controllers.client_modif import *
 from controllers.admin_article import *
 from controllers.admin_commande import *
 from controllers.admin_panier import *
+from controllers.admin_adresse import *
 
 
 app = Flask(__name__)
@@ -65,6 +66,7 @@ app.register_blueprint(client_modif)
 app.register_blueprint(admin_article)
 app.register_blueprint(admin_commande)
 app.register_blueprint(admin_panier)
+app.register_blueprint(admin_adresse)
 
 
 if __name__ == '__main__':

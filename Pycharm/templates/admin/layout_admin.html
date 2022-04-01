@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>SAE BDD</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" >
     {% block stylesheets %}
@@ -24,7 +25,6 @@
     <script src="{{ url_for('static', filename='assets/js/jquery-3.5.1.slim.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/popper.min.js') }}" ></script>
     <script src="{{ url_for('static', filename='assets/js/bootstrap.js') }}" ></script>
-
 {% endblock %}
 </body>
 </html>

@@ -1,0 +1,83 @@
+{% extends "admin/layout_admin.html" %}
+{% block body %}
+    <div class="container-fluid">
+        <h2>Statistiques des adresses</h2>
+        <br>
+        {% if statsInfo is defined %}
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <td>Region</td>
+                    <td>Nombre d'adresse</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ligne in statsInfo %}
+                    <tr>
+                        <td>{{ ligne.region }}</td>
+                        <td>{{ ligne.nbrAddDep }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <h3>Graphique</h3>
+            <input hidden value="{{ nbradresse }}" id="nbradresse">
+            <input hidden value="{{ regions }}" id="regions">
+            <a href="/admin/adresse/graph">Graph version python</a>
+            <canvas id="myChart" max-width="100" max-height="100"></canvas>
+            <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            let nbradresse = document.getElementById('nbradresse').value.split(',')
+            let regions = document.getElementById('regions').value.split(',')
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: regions,
+                    datasets: [{
+                        label: "adresse/région",
+                        data:  nbradresse,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Nombre d'adresse par région"
+                        }
+                    }
+                    , scales: {
+                        y: {
+                            ticks: {
+                                min: 0,
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+            myChart.defaults.global.defaultFontSize = 10;
+            myChart.update();
+            </script>
+            <br class="mb-5">
+
+        {% endif %}
+    </div>
+{% endblock %}
